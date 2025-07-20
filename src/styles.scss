@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
+
+  input,
+  select,
+  textarea {
+    background-color: #333;
+    color: #eee;
+    border-color: #666;
+  }
+
+  label,
+  button,
+  a,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  th,
+  td {
+    color: #eee;
+  }
+}

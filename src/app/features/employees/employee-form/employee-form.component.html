@@ -1,0 +1,42 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="employee-form">
+  <div>
+    <label>Name</label>
+    <input appHoverHighlight type="text" formControlName="name" />
+  </div>
+
+  <div>
+    <label>Position</label>
+    <input appHoverHighlight type="text" formControlName="position" />
+  </div>
+
+  <div>
+    <label>Department</label>
+    <select formControlName="department">
+      <option value="">Select department</option>
+      <option value="Engineering">Engineering</option>
+      <option value="Product">Product</option>
+      <option value="Design">Design</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Hire Date</label>
+    <input type="date" formControlName="hireDate" />
+  </div>
+
+  <div>
+    <label>Status</label>
+    <select formControlName="status">
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Photo</label>
+    <input type="file" (change)="onImageChange($event)" />
+    <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" />
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Save</button>
+</form>

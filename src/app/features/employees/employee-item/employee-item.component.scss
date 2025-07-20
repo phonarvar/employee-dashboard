@@ -1,0 +1,26 @@
+img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+td.active {
+  color: green;
+  font-weight: 500;
+}
+
+td.inactive {
+  color: red;
+  font-style: italic;
+}
+
+/* 🌙 Dark mode overrides */
+:host-context(body.dark-mode) {
+  td.active {
+    color: #66ff66; // lighter green for contrast on dark background
+  }
+
+  td.inactive {
+    color: #ff6666; // lighter red for better contrast
+  }
+}

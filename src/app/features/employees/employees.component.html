@@ -1,0 +1,39 @@
+<div class="employees-page">
+  <h2>Employee List</h2>
+  <div class="status-filter">
+    <button (click)="filterByStatus('active')">Active</button>
+    <button (click)="filterByStatus('inactive')">Inactive</button>
+    <button (click)="clearStatusFilter()">All</button>
+  </div>
+  <input
+    appHoverHighlight
+    type="text"
+    placeholder="Search by name or department"
+    [(ngModel)]="searchTerm"
+  />
+  <button *appIfUserIsAdmin [routerLink]="['/employees/new']" class="new-btn">
+    + New Employee
+  </button>
+
+  <table class="employee-table">
+    <thead>
+      <tr>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Department</th>
+        <th>Status</th>
+        <th>Hired</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- searchTerm will be passed as second argument to pipe-->
+      <!-- added app-employee-item attr directive to select tr instead of tbody-->
+      <tr
+        app-employee-item
+        *ngFor="let emp of employees | filter : searchTerm"
+        [employee]="emp"
+      ></tr>
+    </tbody>
+  </table>
+</div>

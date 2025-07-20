@@ -1,0 +1,15 @@
+<!-- Added a child component for visual representation and separation of logic and other things-->
+<!-- this is the same code in employee html but moved to child component employee item-->
+<!-- removed tr tags then moved it to parent html so only table data here-->
+<td><img [src]="employee.imageUrl" alt="{{ employee.name }}" /></td>
+<td>{{ employee.name }}</td>
+<td>{{ employee.position }}</td>
+<td>{{ employee.department }}</td>
+<!-- dynamically add ore remove css class for styling -->
+<td
+  [class.active]="employee.status === 'active'"
+  [class.inactive]="employee.status === 'inactive'"
+>
+  {{ employee.status }}
+</td>
+<td>{{ employee.hireDate | date : "mediumDate" }}</td>

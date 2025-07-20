@@ -1,0 +1,42 @@
+<div class="layout">
+  <aside class="sidebar">
+    <h2 class="logo">EmployeeApp</h2>
+    <nav>
+      <ul>
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active-link"
+            >Dashboard</a
+          >
+        </li>
+        <li>
+          <a routerLink="/employees" routerLinkActive="active-link"
+            >Employees</a
+          >
+        </li>
+        <li>
+          <a routerLink="/departments" routerLinkActive="active-link"
+            >Departments</a
+          >
+        </li>
+        <li>
+          <a routerLink="/leaves" routerLinkActive="active-link"
+            >Leave Requests</a
+          >
+        </li>
+        <li>
+          <a routerLink="/settings" routerLinkActive="active-link">Settings</a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <a routerLink="login">Login</a>
+    <header class="header">
+      <p>User Profile | Notifications</p>
+    </header>
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

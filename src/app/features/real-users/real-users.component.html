@@ -1,0 +1,7 @@
+<h2>Real Users (from API)</h2>
+
+<app-spinner *ngIf="loading" />
+
+<ul *ngIf="!loading">
+  <li *ngFor="let user of users">{{ user.name }} – {{ user.email }}</li>
+</ul>
