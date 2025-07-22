@@ -62,6 +62,23 @@
       flex: 1;
       overflow-y: auto;
     }
+    .main-login-button {
+      background-color: #2e8b57;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 0.2rem;
+      margin-left: auto;
+      display: block;
+      width: fit-content;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #3cb371;
+      }
+    }
   }
 }
 
@@ -103,5 +120,13 @@ so this is Chatgpt's solution, it changed a lot of css codes, the first code it 
   .layout .content .header {
     background-color: #2c2c2c;
     color: #eee;
+  }
+  .layout .main-login-button {
+    background-color: #246b47; // dark green for dark mode
+    color: #eee;
+
+    &:hover {
+      background-color: #3cb371;
+    }
   }
 }

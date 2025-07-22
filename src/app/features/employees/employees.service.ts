@@ -1,7 +1,52 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Employee } from './employee.model';
 
-@Injectable({
+@Injectable({ providedIn: 'root' })
+export class EmployeeService {
+  private http = inject(HttpClient);
+
+  private employees: Employee[] = [];
+
+  constructor() {
+    // Load fake API data on service init
+    this.http
+      .get<any[]>('https://jsonplaceholder.typicode.com/users')
+      .subscribe((users) => {
+        this.employees = users.map((user) => ({
+          id: user.id,
+          name: user.name,
+          position: 'Software Engineer',
+          department: user.address?.city || 'Unknown',
+          hireDate: new Date().toISOString().slice(0, 10),
+          status: Math.random() > 0.5 ? 'active' : 'inactive',
+          imageUrl: `https://i.pravatar.cc/150?img=${user.id}`,
+        }));
+      });
+  }
+
+  getEmployees(): Employee[] {
+    return this.employees;
+  }
+
+  addEmployee(employee: Employee): void {
+    const newId =
+      this.employees.length > 0
+        ? Math.max(...this.employees.map((e) => e.id)) + 1 //find max ID and increment by 1
+        : 1;
+    const newEmployee = { ...employee, id: newId };
+    this.employees.push(newEmployee);
+  }
+
+  updateEmployee(updatedEmployee: Employee): void {
+    const index = this.employees.findIndex((e) => e.id === updatedEmployee.id);
+    if (index !== -1) {
+      this.employees[index] = updatedEmployee;
+    }
+  }
+}
+//Removed the entire mock data and replaced with api calls
+/**@Injectable({ 
   providedIn: 'root',
 })
 export class EmployeeService {
@@ -66,8 +111,8 @@ export class EmployeeService {
 
   updateEmployee(updatedEmployee: Employee): void {
     const index = this.employees.findIndex((e) => e.id === updatedEmployee.id);
-    if (index !== -1) {
+    if (index !== -1) { //matching ID was found 
       this.employees[index] = updatedEmployee;
     }
   }
-}
+} */
