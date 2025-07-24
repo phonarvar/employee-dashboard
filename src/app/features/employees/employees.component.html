@@ -26,14 +26,11 @@
         <th>Hired</th>
       </tr>
     </thead>
+
+    <!-- searchTerm will be passed as second argument to pipe-->
+    <!-- added app-employee-item attr directive to select tr instead of tbody-->
     <tbody>
-      <!-- searchTerm will be passed as second argument to pipe-->
-      <!-- added app-employee-item attr directive to select tr instead of tbody-->
-      <tr
-        app-employee-item
-        *ngFor="let emp of employees | filter : searchTerm"
-        [employee]="emp"
-      ></tr>
+      <tr *ngFor="let emp of employees" app-employee-item [employee]="emp"></tr>
     </tbody>
   </table>
 </div>

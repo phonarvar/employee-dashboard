@@ -18,7 +18,6 @@ import { IfUserIsAdminDirective } from '../../shared/directives/if-user-is-admin
     FormsModule,
     FilterPipe,
     EmployeeItemComponent,
-    EmployeeFormComponent, //no longer needed for now, remove later
     HoverHighlightDirective,
     RouterLink,
     IfUserIsAdminDirective,
@@ -36,6 +35,7 @@ export class EmployeesComponent implements OnInit {
     private router: Router
   ) {}
 
+  /*  //old method, did not use observables, changed employee service to use observables
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
       const status = params.get('status');
@@ -46,6 +46,24 @@ export class EmployeesComponent implements OnInit {
       } else {
         this.employees = allEmployees;
       }
+    });
+  }
+  **/
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params) => {
+      const status = params.get('status');
+
+      this.employeeService
+        .getEmployees()
+        .subscribe((allEmployees: Employee[]) => {
+          if (status === 'active' || status === 'inactive') {
+            this.employees = allEmployees.filter(
+              (emp: Employee) => emp.status === status
+            );
+          } else {
+            this.employees = allEmployees;
+          }
+        });
     });
   }
 

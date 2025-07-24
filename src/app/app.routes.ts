@@ -25,6 +25,21 @@ export const routes: Routes = [
         //a Promise that resolves to an object with a routes property
       },
       {
+        path: 'departments',
+        loadComponent: () =>
+          import('./features/departments/departments.component').then(
+            (m) => m.DepartmentsComponent
+          ),
+      },
+      {
+        path: 'departments/:id/employees', // employees for specific department
+        loadComponent: () =>
+          import(
+            './features/departments/department-employees/department-employees.component'
+          ).then((m) => m.DepartmentEmployeesComponent),
+        canActivate: [canActivateAdmin], // admins guard
+      },
+      {
         path: 'settings', // ✅ Add this
         loadComponent: () =>
           import('./features/settings/settings.component').then(

@@ -1,0 +1,33 @@
+<div class="department-employees">
+  <h2>Employees in {{ departmentName }}</h2>
+
+  <table *ngIf="employees.length > 0">
+    <thead>
+      <tr>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of employees">
+        <td>
+          <img
+            [src]="
+              emp.imageUrl && emp.imageUrl.startsWith('http')
+                ? emp.imageUrl
+                : 'https://i.pravatar.cc/150?u=' + emp.id
+            "
+            alt="Employee Photo"
+          />
+        </td>
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.position }}</td>
+        <td>{{ emp.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="employees.length === 0">No employees in this department.</p>
+</div>

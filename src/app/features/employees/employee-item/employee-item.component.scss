@@ -17,10 +17,10 @@ td.inactive {
 /* 🌙 Dark mode overrides */
 :host-context(body.dark-mode) {
   td.active {
-    color: #66ff66; // lighter green for contrast on dark background
+    color: #66ff66;
   }
 
   td.inactive {
-    color: #ff6666; // lighter red for better contrast
+    color: #ff6666;
   }
 }

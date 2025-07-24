@@ -1,0 +1,57 @@
+<div class="departments-wrapper">
+  <h2>Departments</h2>
+
+  <!--  Admin-Only Form -->
+  <form
+    *appIfUserIsAdmin
+    (ngSubmit)="addDepartment()"
+    #deptForm="ngForm"
+    class="department-form"
+  >
+    <input
+      type="text"
+      name="name"
+      [(ngModel)]="newDept.name"
+      placeholder="Department Name"
+      required
+    />
+    <input
+      type="text"
+      name="head"
+      [(ngModel)]="newDept.head"
+      placeholder="Department Head"
+      required
+    />
+    <input
+      type="number"
+      name="employeeCount"
+      [(ngModel)]="newDept.employeeCount"
+      placeholder="Employee Count"
+      required
+    />
+    <button type="submit" [disabled]="deptForm.invalid">Add Department</button>
+  </form>
+
+  <!--  Department List -->
+  <table class="departments-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Head</th>
+        <th>Employees</th>
+        <th *appIfUserIsAdmin>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dept of departments">
+        <td>{{ dept.name }}</td>
+        <td>{{ dept.head }}</td>
+        <td>{{ dept.employeeCount }}</td>
+        <td *appIfUserIsAdmin>
+          <button (click)="deleteDepartment(dept.id)">🗑️</button>
+          <button (click)="viewEmployees(dept.id)">👀 View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

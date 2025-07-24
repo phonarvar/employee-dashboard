@@ -1,9 +1,9 @@
 export interface Employee {
-  id: number;
-  name: string; //info
-  position: string; //info
-  department: string; //for filtering and grouping
-  hireDate: string; // ISO string format
-  status: 'active' | 'inactive'; //filtering too
-  imageUrl: string; //looking at clowns
+  id: string;
+  name: string;
+  position: string;
+  department: string;
+  status: string;
+  imageUrl: string;
+  hireDate: string;
 }

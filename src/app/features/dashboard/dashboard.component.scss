@@ -1,0 +1,49 @@
+.dashboard-wrapper {
+  padding: 2rem;
+
+  .card-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .summary-card {
+      flex: 1;
+      padding: 1.5rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      text-align: center;
+
+      h3 {
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .chart-placeholder {
+    background: #f0f0f0;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+  }
+}
+
+/* 🌙 Dark mode overrides */
+:host-context(body.dark-mode) {
+  //needs : host-context
+  .summary-card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+  }
+
+  .chart-placeholder {
+    background: #2c2c2c;
+    color: #ccc;
+  }
+}

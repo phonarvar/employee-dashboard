@@ -1,32 +1,64 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Employee } from './employee.model';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class EmployeeService {
+  private http = inject(HttpClient);
+  private apiUrl =
+    'https://68802d98f1dcae717b613b25.mockapi.io/api/v1/employees';
+
+  getEmployees(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(this.apiUrl);
+  }
+
+  addEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(this.apiUrl, employee);
+  }
+
+  updateEmployee(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(`${this.apiUrl}/${employee.id}`, employee);
+  }
+
+  deleteEmployee(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}
+
+//V2.0 completely replaced
+/* import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Employee } from './employee.model';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
   private http = inject(HttpClient);
 
+  //This array is now ONLY for local add/update fallback
   private employees: Employee[] = [];
 
   constructor() {
-    // Load fake API data on service init
-    this.http
-      .get<any[]>('https://jsonplaceholder.typicode.com/users')
-      .subscribe((users) => {
-        this.employees = users.map((user) => ({
-          id: user.id,
-          name: user.name,
-          position: 'Software Engineer',
-          department: user.address?.city || 'Unknown',
-          hireDate: new Date().toISOString().slice(0, 10),
-          status: Math.random() > 0.5 ? 'active' : 'inactive',
-          imageUrl: `https://i.pravatar.cc/150?img=${user.id}`,
-        }));
-      });
+    this.getEmployees().subscribe((data) => (this.employees = data));
   }
 
-  getEmployees(): Employee[] {
-    return this.employees;
+  getEmployees(): Observable<Employee[]> {
+    return this.http
+      .get<any[]>('https://jsonplaceholder.typicode.com/users')
+      .pipe(
+        map((users) =>
+          users.map((user) => ({
+            id: user.id,
+            name: user.name,
+            position: 'Software Engineer',
+            department: user.address?.city || 'Unknown',
+            hireDate: new Date().toISOString().slice(0, 10),
+            status: Math.random() > 0.5 ? 'active' : 'inactive',
+            imageUrl: `https://i.pravatar.cc/150?img=${user.id}`,
+          }))
+        )
+      );
   }
 
   addEmployee(employee: Employee): void {
@@ -44,8 +76,14 @@ export class EmployeeService {
       this.employees[index] = updatedEmployee;
     }
   }
+
+  getLocalEmployees(): Employee[] {
+    return this.employees;
+  }
 }
-//Removed the entire mock data and replaced with api calls
+  */
+
+//V1.0 Removed the entire mock data and replaced with api calls
 /**@Injectable({ 
   providedIn: 'root',
 })
