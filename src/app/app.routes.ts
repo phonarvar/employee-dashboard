@@ -3,7 +3,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { EMPLOYEES_ROUTES } from './features/employees/employees.routes';
 import { LoginComponent } from './features/login/login.component';
 import { EmployeeFormComponent } from './features/employees/employee-form/employee-form.component'; //remove later
-import { canActivateAdmin } from './core/guard/can-activate-admin.guard'; //remove later
+import { canActivateAdmin } from './core/guard/can-activate-admin.guard';
 import { RealUsersComponent } from './features/real-users/real-users.component';
 
 export const routes: Routes = [
@@ -40,7 +40,15 @@ export const routes: Routes = [
         canActivate: [canActivateAdmin], // admins guard
       },
       {
-        path: 'settings', // ✅ Add this
+        path: 'leave-requests',
+        loadComponent: () =>
+          import('./features/leave-requests/leave-requests.component').then(
+            (m) => m.LeaveRequestsComponent
+          ),
+        canActivate: [canActivateAdmin],
+      },
+      {
+        path: 'settings',
         loadComponent: () =>
           import('./features/settings/settings.component').then(
             (m) => m.SettingsComponent

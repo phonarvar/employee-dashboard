@@ -1,0 +1,41 @@
+<div class="leave-requests-wrapper">
+  <h2>Leave Requests</h2>
+
+  <table *ngIf="leaveRequests.length > 0">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of leaveRequests">
+        <td>{{ request.employeeName }}</td>
+        <td>{{ request.startDate | date : "mediumDate" }}</td>
+        <td>{{ request.endDate | date : "mediumDate" }}</td>
+        <td>{{ request.reason }}</td>
+        <td>{{ request.status }}</td>
+        <td>
+          <button
+            *ngIf="request.status === 'pending'"
+            (click)="updateStatus(request.id, 'approved')"
+          >
+            Approve
+          </button>
+          <button
+            *ngIf="request.status === 'pending'"
+            (click)="updateStatus(request.id, 'rejected')"
+          >
+            Reject
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="leaveRequests.length === 0">No leave requests found.</p>
+</div>
