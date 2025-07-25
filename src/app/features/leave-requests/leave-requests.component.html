@@ -1,38 +1,54 @@
-<div class="leave-requests-wrapper">
+<div class="leave-requests">
   <h2>Leave Requests</h2>
 
   <table *ngIf="leaveRequests.length > 0">
     <thead>
       <tr>
-        <th>Employee</th>
-        <th>Start Date</th>
-        <th>End Date</th>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>From</th>
+        <th>To</th>
         <th>Reason</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let request of leaveRequests">
-        <td>{{ request.employeeName }}</td>
-        <td>{{ request.startDate | date : "mediumDate" }}</td>
-        <td>{{ request.endDate | date : "mediumDate" }}</td>
-        <td>{{ request.reason }}</td>
-        <td>{{ request.status }}</td>
-        <td>
-          <button
-            *ngIf="request.status === 'pending'"
-            (click)="updateStatus(request.id, 'approved')"
-          >
-            Approve
-          </button>
-          <button
-            *ngIf="request.status === 'pending'"
-            (click)="updateStatus(request.id, 'rejected')"
-          >
-            Reject
-          </button>
-        </td>
+      <tr *ngFor="let leave of leaveRequests">
+        <ng-container *ngIf="getEmployee(leave.employeeId) as emp">
+          <td>
+            <img
+              [src]="
+                emp.imageUrl.startsWith('http')
+                  ? emp.imageUrl
+                  : 'https://i.pravatar.cc/150?u=' + emp.id
+              "
+              alt="Emp Photo"
+            />
+          </td>
+          <td>{{ emp.name }}</td>
+          <td>{{ emp.position }}</td>
+          <td>{{ leave.startDate }}</td>
+          <td>{{ leave.endDate }}</td>
+          <td>{{ leave.reason }}</td>
+          <td [ngClass]="leave.status">{{ leave.status }}</td>
+          <td>
+            <button
+              *ngIf="leave.status === 'pending'"
+              (click)="approve(leave)"
+            >
+              Approve
+            </button>
+            <button
+              *ngIf="leave.status === 'pending'"
+              (click)="reject(leave)"
+              class="reject"
+            >
+              Reject
+            </button>
+          </td>
+        </ng-container>
       </tr>
     </tbody>
   </table>

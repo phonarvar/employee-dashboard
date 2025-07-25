@@ -6,6 +6,8 @@ import { LeaveRequest } from './model';
 @Injectable({ providedIn: 'root' })
 export class LeaveRequestService {
   private http = inject(HttpClient);
+
+  //new MockAPI endpoint for leave requests
   private apiUrl =
     'https://6882886f21fa24876a9b249c.mockapi.io/api/v1/leaverequests';
 
@@ -13,9 +15,10 @@ export class LeaveRequestService {
     return this.http.get<LeaveRequest[]>(this.apiUrl);
   }
 
-  updateLeaveStatus(id: string, status: 'approved' | 'rejected') {
-    return this.http.put<LeaveRequest>(`${this.apiUrl}/${id}`, {
-      status,
-    });
+  updateLeaveStatus(
+    id: string,
+    status: 'approved' | 'rejected'
+  ): Observable<LeaveRequest> {
+    return this.http.put<LeaveRequest>(`${this.apiUrl}/${id}`, { status });
   }
 }

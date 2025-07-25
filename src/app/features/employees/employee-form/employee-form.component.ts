@@ -64,7 +64,7 @@ export class EmployeeFormComponent implements OnInit {
       const employee = this.form.value as Employee;
 
       if (employee.id) {
-        this.employeeService.updateEmployee(employee);
+        this.employeeService.updateEmployee(employee.id, employee);
       } else {
         this.employeeService.addEmployee(employee); // Adds to service
       }

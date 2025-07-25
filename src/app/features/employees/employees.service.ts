@@ -1,9 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Employee } from './employee.model';
 import { Observable } from 'rxjs';
+import { Employee } from './employee.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class EmployeeService {
   private http = inject(HttpClient);
   private apiUrl =
@@ -13,16 +15,24 @@ export class EmployeeService {
     return this.http.get<Employee[]>(this.apiUrl);
   }
 
-  addEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.apiUrl, employee);
+  getEmployee(id: string): Observable<Employee> {
+    return this.http.get<Employee>(`${this.apiUrl}/${id}`);
   }
 
-  updateEmployee(employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiUrl}/${employee.id}`, employee);
+  addEmployee(emp: Partial<Employee>): Observable<Employee> {
+    return this.http.post<Employee>(this.apiUrl, emp);
+  }
+
+  updateEmployee(id: string, emp: Partial<Employee>): Observable<Employee> {
+    return this.http.put<Employee>(`${this.apiUrl}/${id}`, emp);
   }
 
   deleteEmployee(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateStatus(id: string, status: string): Observable<Employee> {
+    return this.http.put<Employee>(`${this.apiUrl}/${id}`, { status });
   }
 }
 

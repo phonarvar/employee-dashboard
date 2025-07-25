@@ -7,7 +7,7 @@ export interface Department {
 
 export interface LeaveRequest {
   id: string;
-  employeeName: string;
+  employeeId: string;
   startDate: string;
   endDate: string;
   reason: string;
