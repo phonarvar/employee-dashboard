@@ -21,4 +21,8 @@ export class LeaveRequestService {
   ): Observable<LeaveRequest> {
     return this.http.put<LeaveRequest>(`${this.apiUrl}/${id}`, { status });
   }
+
+  createLeaveRequest(data: Omit<LeaveRequest, 'id'>): Observable<LeaveRequest> {
+    return this.http.post<LeaveRequest>(this.apiUrl, data);
+  }
 }

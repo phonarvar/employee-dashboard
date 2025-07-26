@@ -1,0 +1,22 @@
+<div class="leave-form">
+  <h2>Request Leave</h2>
+
+  <form (ngSubmit)="submitLeaveRequest()" #leaveForm="ngForm">
+    <label>
+      Start Date:
+      <input type="date" name="startDate" [(ngModel)]="leave.startDate" required />
+    </label>
+
+    <label>
+      End Date:
+      <input type="date" name="endDate" [(ngModel)]="leave.endDate" required />
+    </label>
+
+    <label>
+      Reason:
+      <textarea name="reason" [(ngModel)]="leave.reason" required></textarea>
+    </label>
+
+    <button type="submit" [disabled]="leaveForm.invalid">Submit</button>
+  </form>
+</div>

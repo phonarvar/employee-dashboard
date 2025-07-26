@@ -3,8 +3,11 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { EMPLOYEES_ROUTES } from './features/employees/employees.routes';
 import { LoginComponent } from './features/login/login.component';
 import { EmployeeFormComponent } from './features/employees/employee-form/employee-form.component'; //remove later
-import { canActivateAdmin } from './core/guard/can-activate-admin.guard';
 import { RealUsersComponent } from './features/real-users/real-users.component';
+import { LeaveRequestFormComponent } from './features/leave-requests/leave-request-form/leave-request-form.component';
+import { canActivateAdmin } from './core/guard/can-activate-admin.guard';
+import { canActivateUser } from './core/guard/can-activate-user.guard';
+import { canActivateUserOrAdmin } from './core/guard/can-activate-user-or-admin.guard';
 
 export const routes: Routes = [
   {
@@ -45,7 +48,7 @@ export const routes: Routes = [
           import('./features/leave-requests/leave-requests.component').then(
             (m) => m.LeaveRequestsComponent
           ),
-        canActivate: [canActivateAdmin],
+        canActivate: [canActivateUserOrAdmin],
       },
       {
         path: 'settings',
@@ -53,6 +56,15 @@ export const routes: Routes = [
           import('./features/settings/settings.component').then(
             (m) => m.SettingsComponent
           ),
+      },
+
+      {
+        path: 'leave-request/new',
+        loadComponent: () =>
+          import(
+            './features/leave-requests/leave-request-form/leave-request-form.component'
+          ).then((m) => m.LeaveRequestFormComponent),
+        canActivate: [canActivateUser],
       },
 
       //placeholder for other children
@@ -65,6 +77,7 @@ export const routes: Routes = [
   },
   {
     path: 'real-users', //the only purpose of this page is to showcase real API call instead of mock data
+    // I should technically remove it since now the entire app uses real API calls instead of local mock data
     loadComponent: () =>
       import('./features/real-users/real-users.component').then(
         (m) => m.RealUsersComponent

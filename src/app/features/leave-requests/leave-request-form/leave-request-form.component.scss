@@ -1,0 +1,85 @@
+.leave-form {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  input[type="date"],
+  textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  button {
+    padding: 0.7rem 1.5rem;
+    background-color: #1976d2;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #155fa0;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* 🌙 DARK MODE SUPPORT */
+:host-context(body.dark-mode) {
+  .leave-form {
+    background-color: #1e1e1e;
+    border-color: #333;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+
+    label {
+      color: #ddd;
+    }
+
+    input[type="date"],
+    textarea {
+      background-color: #2a2a2a;
+      border: 1px solid #555;
+      color: #f0f0f0;
+    }
+
+    button {
+      background-color: #2196f3;
+
+      &:hover {
+        background-color: #1976d2;
+      }
+
+      &:disabled {
+        background-color: #555;
+      }
+    }
+  }
+}

@@ -1,7 +1,29 @@
 <div class="leave-requests">
   <h2>Leave Requests</h2>
 
-  <table *ngIf="leaveRequests.length > 0">
+  <!-- 👤 USER VIEW: Submit Leave Form -->
+  <div *ngIf="!isAdmin" class="leave-form">
+    <form (ngSubmit)="submitLeaveRequest()" #f="ngForm">
+      <label>Start Date:</label>
+      <input
+        type="date"
+        name="startDate"
+        [(ngModel)]="leave.startDate"
+        required
+      />
+
+      <label>End Date:</label>
+      <input type="date" name="endDate" [(ngModel)]="leave.endDate" required />
+
+      <label>Reason:</label>
+      <textarea name="reason" [(ngModel)]="leave.reason" required></textarea>
+
+      <button type="submit" [disabled]="f.invalid">Submit</button>
+    </form>
+  </div>
+
+  <!-- 👑 ADMIN VIEW: Table of Requests -->
+  <table *ngIf="isAdmin && leaveRequests.length > 0">
     <thead>
       <tr>
         <th>Photo</th>
@@ -16,6 +38,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let leave of leaveRequests">
+        <!-- objects are truthy assign it to emp variable-->
         <ng-container *ngIf="getEmployee(leave.employeeId) as emp">
           <td>
             <img
@@ -34,10 +57,7 @@
           <td>{{ leave.reason }}</td>
           <td [ngClass]="leave.status">{{ leave.status }}</td>
           <td>
-            <button
-              *ngIf="leave.status === 'pending'"
-              (click)="approve(leave)"
-            >
+            <button *ngIf="leave.status === 'pending'" (click)="approve(leave)">
               Approve
             </button>
             <button
@@ -53,5 +73,5 @@
     </tbody>
   </table>
 
-  <p *ngIf="leaveRequests.length === 0">No leave requests found.</p>
+  <p *ngIf="isAdmin && leaveRequests.length === 0">No leave requests found.</p>
 </div>

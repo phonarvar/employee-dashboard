@@ -12,7 +12,9 @@ export class AuthService {
 
   private _isLoggedIn = signal(false);
   private _isAdmin = signal(false);
+  private _userId = signal('1'); //hardcoded temporary
 
+  readonly isLoggedIn = computed(() => this._isLoggedIn());
   readonly isAdmin = computed(() => this._isLoggedIn() && this._isAdmin()); //value derived from more than one signal
 
   login(email: string, password: string): Observable<{ success: boolean }> {
@@ -33,5 +35,9 @@ export class AuthService {
   logout(): void {
     this._isLoggedIn.set(false);
     this._isAdmin.set(false);
+  }
+
+  loggedInUserId() {
+    return this._userId();
   }
 }
