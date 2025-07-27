@@ -7,7 +7,7 @@ import { RealUsersComponent } from './features/real-users/real-users.component';
 import { LeaveRequestFormComponent } from './features/leave-requests/leave-request-form/leave-request-form.component';
 import { canActivateAdmin } from './core/guard/can-activate-admin.guard';
 import { canActivateUser } from './core/guard/can-activate-user.guard';
-import { canActivateUserOrAdmin } from './core/guard/can-activate-user-or-admin.guard';
+import { roleRedirectGuard } from './core/guard/role-redirect.guard';
 
 export const routes: Routes = [
   {
@@ -44,11 +44,20 @@ export const routes: Routes = [
       },
       {
         path: 'leave-requests',
+        canActivate: [roleRedirectGuard],
         loadComponent: () =>
           import('./features/leave-requests/leave-requests.component').then(
             (m) => m.LeaveRequestsComponent
           ),
-        canActivate: [canActivateUserOrAdmin],
+      },
+
+      {
+        path: 'leave-requests/form',
+        loadComponent: () =>
+          import(
+            './features/leave-requests/leave-request-form/leave-request-form.component'
+          ).then((m) => m.LeaveRequestFormComponent),
+        canActivate: [canActivateUser],
       },
       {
         path: 'settings',
@@ -56,15 +65,6 @@ export const routes: Routes = [
           import('./features/settings/settings.component').then(
             (m) => m.SettingsComponent
           ),
-      },
-
-      {
-        path: 'leave-request/new',
-        loadComponent: () =>
-          import(
-            './features/leave-requests/leave-request-form/leave-request-form.component'
-          ).then((m) => m.LeaveRequestFormComponent),
-        canActivate: [canActivateUser],
       },
 
       //placeholder for other children

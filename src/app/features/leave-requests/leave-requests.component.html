@@ -1,6 +1,6 @@
 <div class="leave-requests">
   <!-- USER FORM SECTION -->
-  <div *ngIf="!isAdmin()" class="leave-form">
+  <div *ngIf="!isAdmin()" class="form-wrapper">
     <h2>Submit Leave Request</h2>
     <form (ngSubmit)="submitForm()">
       <div class="form-group">
@@ -35,11 +35,11 @@
         ></textarea>
       </div>
 
-      <button type="submit" class="submit-button">Submit</button>
+      <button type="submit" class="primary-button">Submit</button>
     </form>
   </div>
 
-  <!-- ADMIN LEAVE REQUESTS TABLE -->
+  <!-- ADMIN TABLE SECTION -->
   <div *ngIf="isAdmin()" class="admin-table">
     <h2>Leave Requests</h2>
     <table>
