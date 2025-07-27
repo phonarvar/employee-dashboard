@@ -1,22 +1,21 @@
-<div class="leave-form">
-  <h2>Request Leave</h2>
+<div class="form-wrapper">
+  <h2>New Leave Request</h2>
+  <form (ngSubmit)="submitForm()">
+    <div class="form-group">
+      <label for="startDate">Start Date</label>
+      <input id="startDate" type="date" [(ngModel)]="startDate" name="startDate" required />
+    </div>
 
-  <form (ngSubmit)="submitLeaveRequest()" #leaveForm="ngForm">
-    <label>
-      Start Date:
-      <input type="date" name="startDate" [(ngModel)]="leave.startDate" required />
-    </label>
+    <div class="form-group">
+      <label for="endDate">End Date</label>
+      <input id="endDate" type="date" [(ngModel)]="endDate" name="endDate" required />
+    </div>
 
-    <label>
-      End Date:
-      <input type="date" name="endDate" [(ngModel)]="leave.endDate" required />
-    </label>
+    <div class="form-group">
+      <label for="reason">Reason</label>
+      <textarea id="reason" [(ngModel)]="reason" name="reason" required></textarea>
+    </div>
 
-    <label>
-      Reason:
-      <textarea name="reason" [(ngModel)]="leave.reason" required></textarea>
-    </label>
-
-    <button type="submit" [disabled]="leaveForm.invalid">Submit</button>
+    <button type="submit">Submit</button>
   </form>
 </div>

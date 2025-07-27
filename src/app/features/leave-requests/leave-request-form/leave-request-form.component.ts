@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { LeaveRequestService } from '../../../core/leave-request.service';
 import { AuthService } from '../../../core/auth-service.service';
-import { LeaveRequest } from '../../../core/model';
+import { LeaveRequestService } from '../../../core/leave-request.service';
+import { LeaveRequest } from '../../../core/model'; // <-- Make sure to import this
 
 @Component({
   selector: 'app-leave-request-form',
@@ -14,30 +13,37 @@ import { LeaveRequest } from '../../../core/model';
   styleUrls: ['./leave-request-form.component.scss'],
 })
 export class LeaveRequestFormComponent {
-  private leaveService = inject(LeaveRequestService);
+  startDate = '';
+  endDate = '';
+  reason = '';
+
   private authService = inject(AuthService);
-  private router = inject(Router);
+  private leaveService = inject(LeaveRequestService);
 
-  // Form model for ngModel binding
-  leave = {
-    startDate: '',
-    endDate: '',
-    reason: '',
-  };
+  @Output() requestSubmitted = new EventEmitter<void>();
 
-  submitLeaveRequest() {
+  submitForm() {
     const employeeId = this.authService.loggedInUserId();
 
-    //  typed object to satisfy LeaveRequest type
+    if (!employeeId) {
+      alert('User is not logged in!');
+      return;
+    }
+
     const newLeave: Omit<LeaveRequest, 'id'> = {
-      ...this.leave,
-      employeeId,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      reason: this.reason,
+      employeeId: employeeId,
       status: 'pending',
     };
 
     this.leaveService.createLeaveRequest(newLeave).subscribe(() => {
       alert('Leave request submitted!');
-      this.router.navigate(['/leave-requests']);
+      this.startDate = '';
+      this.endDate = '';
+      this.reason = '';
+      this.requestSubmitted.emit();
     });
   }
 }

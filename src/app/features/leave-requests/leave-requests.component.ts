@@ -20,23 +20,17 @@ export class LeaveRequestsComponent implements OnInit {
   private authService = inject(AuthService);
 
   leaveRequests: LeaveRequest[] = [];
-  employeesMap = new Map<string, Employee>(); // use a key that is string to store an object that is type of employee
+  employeesMap = new Map<string, Employee>();
 
-  // Expose isAdmin as a public getter
   readonly isAdmin = this.authService.isAdmin();
 
-  // Model for leave request form (if user)
-  leave = {
-    startDate: '',
-    endDate: '',
-    reason: '',
-  };
+  // Form Model (this was missing in your old code)
+  startDate: string = '';
+  endDate: string = '';
+  reason: string = '';
 
   ngOnInit(): void {
     if (this.isAdmin) {
-      // Only admins fetch employee list and leave requests
-      // we can then retrieve employee object // Fetch employees first to map by ID
-      //Given a leave.employeeId, find the matching employee object from the other API
       this.employeeService.getEmployees().subscribe((employees) => {
         for (const emp of employees) {
           this.employeesMap.set(emp.id, emp);
@@ -73,18 +67,27 @@ export class LeaveRequestsComponent implements OnInit {
     });
   }
 
-  submitLeaveRequest() {
-    const employeeId = this.authService.loggedInUserId();
+  submitForm() {
+    const employeeId = this.authService.loggedInUserId() ?? '';
+
+    if (!this.startDate || !this.endDate || !this.reason) {
+      alert('Please fill in all fields.');
+      return;
+    }
 
     const newLeave: Omit<LeaveRequest, 'id'> = {
-      ...this.leave,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      reason: this.reason,
       employeeId,
       status: 'pending',
     };
 
     this.leaveService.createLeaveRequest(newLeave).subscribe(() => {
       alert('Leave request submitted!');
-      this.leave = { startDate: '', endDate: '', reason: '' }; // Reset
+      this.startDate = '';
+      this.endDate = '';
+      this.reason = '';
     });
   }
 }

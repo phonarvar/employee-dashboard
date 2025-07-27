@@ -12,7 +12,7 @@ export class AuthService {
 
   private _isLoggedIn = signal(false);
   private _isAdmin = signal(false);
-  private _userId = signal('1'); //hardcoded temporary
+  private _userId = signal<string | null>(null); //hardcoded temporary
 
   readonly isLoggedIn = computed(() => this._isLoggedIn());
   readonly isAdmin = computed(() => this._isLoggedIn() && this._isAdmin()); //value derived from more than one signal
@@ -25,6 +25,7 @@ export class AuthService {
     if (user) {
       this._isLoggedIn.set(true);
       this._isAdmin.set(user.role === 'admin');
+      this._userId.set(user.role === 'admin' ? 'admin-uid' : 'user-uid');
       return of({ success: true }); //returning obs instead of boolean true because http calls return obs as well
     }
 
@@ -35,6 +36,7 @@ export class AuthService {
   logout(): void {
     this._isLoggedIn.set(false);
     this._isAdmin.set(false);
+    this._userId.set(null);
   }
 
   loggedInUserId() {

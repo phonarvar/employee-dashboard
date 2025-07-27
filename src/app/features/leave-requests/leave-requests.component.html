@@ -1,77 +1,56 @@
 <div class="leave-requests">
-  <h2>Leave Requests</h2>
 
-  <!-- 👤 USER VIEW: Submit Leave Form -->
+  <!-- USER FORM SECTION -->
   <div *ngIf="!isAdmin" class="leave-form">
-    <form (ngSubmit)="submitLeaveRequest()" #f="ngForm">
-      <label>Start Date:</label>
-      <input
-        type="date"
-        name="startDate"
-        [(ngModel)]="leave.startDate"
-        required
-      />
+    <h2>Submit Leave Request</h2>
+    <form (ngSubmit)="submitForm()">
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" [(ngModel)]="startDate" name="startDate" required />
+      </div>
 
-      <label>End Date:</label>
-      <input type="date" name="endDate" [(ngModel)]="leave.endDate" required />
+      <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" [(ngModel)]="endDate" name="endDate" required />
+      </div>
 
-      <label>Reason:</label>
-      <textarea name="reason" [(ngModel)]="leave.reason" required></textarea>
+      <div class="form-group">
+        <label for="reason">Reason</label>
+        <textarea id="reason" [(ngModel)]="reason" name="reason" required></textarea>
+      </div>
 
-      <button type="submit" [disabled]="f.invalid">Submit</button>
+      <button type="submit" class="submit-button">Submit</button>
     </form>
   </div>
 
-  <!-- 👑 ADMIN VIEW: Table of Requests -->
-  <table *ngIf="isAdmin && leaveRequests.length > 0">
-    <thead>
-      <tr>
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Position</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let leave of leaveRequests">
-        <!-- objects are truthy assign it to emp variable-->
-        <ng-container *ngIf="getEmployee(leave.employeeId) as emp">
-          <td>
-            <img
-              [src]="
-                emp.imageUrl.startsWith('http')
-                  ? emp.imageUrl
-                  : 'https://i.pravatar.cc/150?u=' + emp.id
-              "
-              alt="Emp Photo"
-            />
-          </td>
-          <td>{{ emp.name }}</td>
-          <td>{{ emp.position }}</td>
+  <!-- ADMIN LEAVE REQUESTS TABLE -->
+  <div *ngIf="isAdmin" class="admin-table">
+    <h2>Leave Requests</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Employee Name</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let leave of leaveRequests">
+          <td>{{ getEmployee(leave.employeeId)?.name || 'Unknown' }}</td>
           <td>{{ leave.startDate }}</td>
           <td>{{ leave.endDate }}</td>
           <td>{{ leave.reason }}</td>
-          <td [ngClass]="leave.status">{{ leave.status }}</td>
+          <td>{{ leave.status }}</td>
           <td>
-            <button *ngIf="leave.status === 'pending'" (click)="approve(leave)">
-              Approve
-            </button>
-            <button
-              *ngIf="leave.status === 'pending'"
-              (click)="reject(leave)"
-              class="reject"
-            >
-              Reject
-            </button>
+            <button *ngIf="leave.status === 'pending'" (click)="approve(leave)" class="approve-button">Approve</button>
+            <button *ngIf="leave.status === 'pending'" (click)="reject(leave)" class="reject-button">Reject</button>
           </td>
-        </ng-container>
-      </tr>
-    </tbody>
-  </table>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <p *ngIf="isAdmin && leaveRequests.length === 0">No leave requests found.</p>
 </div>
