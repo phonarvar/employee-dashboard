@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmployeeService } from '../employees/employees.service';
-import { RealApiService } from '../../core/real-api.service'; // simulate leaves & departments
+import { DepartmentService } from '../../core/department.service';
+import { LeaveRequestService } from '../../core/leave-request.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,8 @@ import { RealApiService } from '../../core/real-api.service'; // simulate leaves
 })
 export class DashboardComponent implements OnInit {
   private employeeService = inject(EmployeeService);
-  private realApiService = inject(RealApiService); // fake leaves & departments
+  private departmentService = inject(DepartmentService);
+  private leaveService = inject(LeaveRequestService);
 
   totalEmployees = 0;
   totalDepartments = 0;
@@ -23,11 +25,11 @@ export class DashboardComponent implements OnInit {
       this.totalEmployees = data.length;
     });
 
-    this.realApiService.getDepartments().subscribe((data) => {
+    this.departmentService.getDepartments().subscribe((data) => {
       this.totalDepartments = data.length;
     });
 
-    this.realApiService.getLeaves().subscribe((data) => {
+    this.leaveService.getLeaves().subscribe((data) => {
       this.pendingLeaves = data.filter((l) => l.status === 'pending').length;
     });
   }
