@@ -6,7 +6,7 @@ export const canActivateUserOrAdmin: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  const isLoggedIn = auth.loggedInUserId() !== null;
+  const isLoggedIn = auth.loggedInUserId() !== null; //became a pain later because of signal's hardcoded value
 
   if (!isLoggedIn) {
     alert('You must be logged in.');

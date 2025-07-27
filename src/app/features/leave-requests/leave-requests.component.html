@@ -1,22 +1,38 @@
 <div class="leave-requests">
-
   <!-- USER FORM SECTION -->
-  <div *ngIf="!isAdmin" class="leave-form">
+  <div *ngIf="!isAdmin()" class="leave-form">
     <h2>Submit Leave Request</h2>
     <form (ngSubmit)="submitForm()">
       <div class="form-group">
         <label for="startDate">Start Date</label>
-        <input type="date" id="startDate" [(ngModel)]="startDate" name="startDate" required />
+        <input
+          type="date"
+          id="startDate"
+          [(ngModel)]="startDate"
+          name="startDate"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label for="endDate">End Date</label>
-        <input type="date" id="endDate" [(ngModel)]="endDate" name="endDate" required />
+        <input
+          type="date"
+          id="endDate"
+          [(ngModel)]="endDate"
+          name="endDate"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label for="reason">Reason</label>
-        <textarea id="reason" [(ngModel)]="reason" name="reason" required></textarea>
+        <textarea
+          id="reason"
+          [(ngModel)]="reason"
+          name="reason"
+          required
+        ></textarea>
       </div>
 
       <button type="submit" class="submit-button">Submit</button>
@@ -24,7 +40,7 @@
   </div>
 
   <!-- ADMIN LEAVE REQUESTS TABLE -->
-  <div *ngIf="isAdmin" class="admin-table">
+  <div *ngIf="isAdmin()" class="admin-table">
     <h2>Leave Requests</h2>
     <table>
       <thead>
@@ -39,18 +55,29 @@
       </thead>
       <tbody>
         <tr *ngFor="let leave of leaveRequests">
-          <td>{{ getEmployee(leave.employeeId)?.name || 'Unknown' }}</td>
+          <td>{{ getEmployee(leave.employeeId)?.name || "Unknown" }}</td>
           <td>{{ leave.startDate }}</td>
           <td>{{ leave.endDate }}</td>
           <td>{{ leave.reason }}</td>
           <td>{{ leave.status }}</td>
           <td>
-            <button *ngIf="leave.status === 'pending'" (click)="approve(leave)" class="approve-button">Approve</button>
-            <button *ngIf="leave.status === 'pending'" (click)="reject(leave)" class="reject-button">Reject</button>
+            <button
+              *ngIf="leave.status === 'pending'"
+              (click)="approve(leave)"
+              class="approve-button"
+            >
+              Approve
+            </button>
+            <button
+              *ngIf="leave.status === 'pending'"
+              (click)="reject(leave)"
+              class="reject-button"
+            >
+              Reject
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>

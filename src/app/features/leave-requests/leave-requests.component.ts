@@ -22,15 +22,16 @@ export class LeaveRequestsComponent implements OnInit {
   leaveRequests: LeaveRequest[] = [];
   employeesMap = new Map<string, Employee>();
 
-  readonly isAdmin = this.authService.isAdmin();
+  readonly isAdmin = computed(() => this.authService.isAdmin()); //signal, not static boolean
 
-  // Form Model (this was missing in your old code)
+  // Form Model for User submission
   startDate: string = '';
   endDate: string = '';
   reason: string = '';
 
   ngOnInit(): void {
-    if (this.isAdmin) {
+    if (this.isAdmin()) {
+      // Admin: load all leave requests + employee names
       this.employeeService.getEmployees().subscribe((employees) => {
         for (const emp of employees) {
           this.employeesMap.set(emp.id, emp);
@@ -40,6 +41,8 @@ export class LeaveRequestsComponent implements OnInit {
           this.leaveRequests = leaves;
         });
       });
+    } else {
+      // User view: optional logic to fetch their own requests
     }
   }
 
