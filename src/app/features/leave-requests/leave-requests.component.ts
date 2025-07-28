@@ -84,6 +84,7 @@ export class LeaveRequestsComponent implements OnInit {
       reason: this.reason,
       employeeId,
       status: 'pending',
+      createdAt: new Date().toISOString(),
     };
 
     this.leaveService.createLeaveRequest(newLeave).subscribe(() => {

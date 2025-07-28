@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { EmployeeService } from '../employees/employees.service';
 import { DepartmentService } from '../../core/department.service';
 import { LeaveRequestService } from '../../core/leave-request.service';
+import { LeaveChartComponent } from './leave-chart/leave-chart.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LeaveChartComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })

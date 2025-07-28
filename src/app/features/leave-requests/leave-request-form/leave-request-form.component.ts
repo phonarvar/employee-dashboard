@@ -36,6 +36,7 @@ export class LeaveRequestFormComponent {
       reason: this.reason,
       employeeId: employeeId,
       status: 'pending',
+      createdAt: new Date().toISOString(),
     };
 
     this.leaveService.createLeaveRequest(newLeave).subscribe(() => {

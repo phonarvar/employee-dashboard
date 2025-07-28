@@ -34,16 +34,21 @@
   }
 }
 
-/* 🌙 Dark mode overrides */
-:host-context(body.dark-mode) {
-  //needs : host-context
-  .summary-card {
-    background-color: #1e1e1e;
-    color: #ffffff;
-  }
+/* 🌙 DARK MODE: Top-level rule so Angular doesn’t scope it wrong */
+:host-context(body.dark-mode) .card-container .summary-card {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 
-  .chart-placeholder {
-    background: #2c2c2c;
-    color: #ccc;
+  h3,
+  p {
+    color: #ffffff;
+    background: transparent;
   }
+}
+
+:host-context(body.dark-mode) .chart-placeholder {
+  background: #2c2c2c;
+  color: #ccc;
 }
