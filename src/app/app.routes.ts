@@ -23,7 +23,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'employees',
+        path: 'employees', //use loadChildren when grouping otherwise use loadComponent
         loadChildren: () => Promise.resolve(EMPLOYEES_ROUTES), //Angular expects the loadChildren function to return
         //a Promise that resolves to an object with a routes property
       },
@@ -44,20 +44,10 @@ export const routes: Routes = [
       },
       {
         path: 'leave-requests',
-        canActivate: [roleRedirectGuard],
-        loadComponent: () =>
-          import('./features/leave-requests/leave-requests.component').then(
-            (m) => m.LeaveRequestsComponent
+        loadChildren: () =>
+          import('./features/leave-requests/leave-requests.routes').then(
+            (m) => m.LEAVE_REQUEST_ROUTES
           ),
-      },
-
-      {
-        path: 'leave-requests/form',
-        loadComponent: () =>
-          import(
-            './features/leave-requests/leave-request-form/leave-request-form.component'
-          ).then((m) => m.LeaveRequestFormComponent),
-        canActivate: [canActivateUser],
       },
       {
         path: 'settings',

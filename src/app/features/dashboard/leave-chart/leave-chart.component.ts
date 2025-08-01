@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  NgApexchartsModule,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ChartComponent as ApexChartComponent,
+  NgApexchartsModule, // ApexCharts.js library
+  ApexAxisChartSeries, // A type defining the structure of data series
+  ApexChart, // A type representing chart configuration options like type, height, animations
+  ApexXAxis, //A type for X-axis config
+  ChartComponent as ApexChartComponent, //renaming
 } from 'ng-apexcharts';
 import { LeaveRequestService } from '../../../core/leave-request.service';
 import { LeaveRequest } from '../../../core/model';
@@ -19,42 +19,46 @@ import { LeaveRequest } from '../../../core/model';
 export class LeaveChartComponent implements OnInit {
   private leaveService = inject(LeaveRequestService);
 
-  @ViewChild('chartObj') chartObj: ApexChartComponent | undefined; // Get Chart Component Reference
+  @ViewChild('chartObj') chartObj: ApexChartComponent | undefined; // Get Chart Component Reference, may not exist before view init
 
-  series: ApexAxisChartSeries = [];
+  series: ApexAxisChartSeries = []; // set of data points plotted on a chart, data is required, name is optional but always used
   chart: ApexChart = {
+    //type ensures valid properties (type, height, animations)
     type: 'bar',
-    height: 350,
+    height: 350, //entire chart container is 350 pixel tall
   };
   xaxis: ApexXAxis = {
-    categories: [],
-    type: 'category', // Ensure category type
-  };
+    //config for x-axis
+    categories: [], //array of labels that appear under each bar
+    type: 'category', //type tells ApexCharts how to interpret the X-axis, 'category' = Treat labels as text names
+  }; //'datetime' = treat as timestamp, 'number' = treat as numbers
 
   ngOnInit(): void {
     this.leaveService.getLeaves().subscribe((leaves: LeaveRequest[]) => {
-      const monthlyCounts: Record<string, number> = {};
+      const monthlyCounts: Record<string, number> = {}; //utility type describing objects with specific key-value
 
       for (const leave of leaves) {
         const date = new Date(leave.createdAt);
         const month = date.toLocaleString('default', {
-          month: 'short',
-          year: 'numeric',
+          //.toLocaleString(locale, options), locale = language/country format, option = config object
+          month: 'short', //common
+          year: 'numeric', //common
         });
-        monthlyCounts[month] = (monthlyCounts[month] || 0) + 1;
+        monthlyCounts[month] = (monthlyCounts[month] || 0) + 1; // sets the values of monthlyCounts keys
       }
 
-      this.xaxis.categories = Object.keys(monthlyCounts);
+      this.xaxis.categories = Object.keys(monthlyCounts); //Sets  labels on the X-axis.
       this.series = [
         {
-          name: 'Leave Requests',
-          data: Object.values(monthlyCounts),
+          name: 'Leave Requests', //This is the label for the series, appears as legend on each bar
+          data: Object.values(monthlyCounts), //bar height or datapoint
         },
       ];
 
-      // Force Chart to Re-render after async data load
+      // Forcing/tricking Chart to Re-render, after ngOnInit, the view is not fully rendered or even apexchart engine might not be ready
+      //It's better to use ngAfterViewInit with changeDetectionRef but I'll leave it be for now
       setTimeout(() => {
-        this.chartObj?.updateOptions({
+        this.chartObj?.updateOptions({ //A method provided by the ApexChartComponent
           xaxis: this.xaxis,
           series: this.series,
         });

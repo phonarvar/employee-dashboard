@@ -9,6 +9,7 @@ import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HoverHighlightDirective } from '../../shared/directives/hover-highlight.directive';
 import { IfUserIsAdminDirective } from '../../shared/directives/if-user-is-admin.directive';
+import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 
 @Component({
   selector: 'app-employees',
@@ -16,11 +17,12 @@ import { IfUserIsAdminDirective } from '../../shared/directives/if-user-is-admin
   imports: [
     CommonModule,
     FormsModule,
-    FilterPipe,
+    FilterPipe, //no longer used, look at it later
     EmployeeItemComponent,
     HoverHighlightDirective,
     RouterLink,
     IfUserIsAdminDirective,
+    SpinnerComponent
   ],
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss'],
@@ -28,6 +30,7 @@ import { IfUserIsAdminDirective } from '../../shared/directives/if-user-is-admin
 export class EmployeesComponent implements OnInit {
   employees: Employee[] = [];
   searchTerm: string = '';
+  loading = true;
 
   constructor(
     private employeeService: EmployeeService,
@@ -63,11 +66,13 @@ export class EmployeesComponent implements OnInit {
           } else {
             this.employees = allEmployees;
           }
+          this.loading = false; //hide spinner after loading
         });
     });
   }
 
   filterByStatus(status: string) {
+    this.loading = true;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { status },
@@ -76,6 +81,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   clearStatusFilter() {
+    this.loading = true;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { status: null },
