@@ -35,11 +35,38 @@
       <!-- universal angular rule, left side is input in child comp and right side refers to parent property-->
       <tbody>
         <tr
-          *ngFor="let emp of employees"
+          *ngFor="let emp of paginatedEmployees"
           app-employee-item
           [employee]="emp"
         ></tr>
       </tbody>
     </table>
+
+    <div class="pagination">
+      <button
+        (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+      >
+        Previous
+      </button>
+
+      <ng-container
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+      >
+        <button
+          (click)="changePage(i + 1)"
+          [class.active]="currentPage === i + 1"
+        >
+          {{ i + 1 }}
+        </button>
+      </ng-container>
+
+      <button
+        (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+      >
+        Next
+      </button>
+    </div>
   </ng-container>
 </div>

@@ -17,12 +17,12 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
   imports: [
     CommonModule,
     FormsModule,
-    FilterPipe, //no longer used, look at it later
+    FilterPipe, //no longer used, look at it later possibly remove
     EmployeeItemComponent,
     HoverHighlightDirective,
     RouterLink,
     IfUserIsAdminDirective,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss'],
@@ -31,6 +31,12 @@ export class EmployeesComponent implements OnInit {
   employees: Employee[] = [];
   searchTerm: string = '';
   loading = true;
+
+  // Pagination variables
+  paginatedEmployees: Employee[] = [];
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 0;
 
   constructor(
     private employeeService: EmployeeService,
@@ -44,16 +50,29 @@ export class EmployeesComponent implements OnInit {
       this.employeeService
         .getEmployees()
         .subscribe((allEmployees: Employee[]) => {
+          let filtered = allEmployees;
           if (status === 'active' || status === 'inactive') {
-            this.employees = allEmployees.filter(
-              (emp: Employee) => emp.status === status
-            );
-          } else {
-            this.employees = allEmployees;
+            filtered = allEmployees.filter((emp) => emp.status === status);
           }
+
+          this.employees = filtered;
+          this.totalPages = Math.ceil(this.employees.length / this.pageSize);
+          this.setPaginatedEmployees();
           this.loading = false; //hide spinner after loading
         });
     });
+  }
+
+  setPaginatedEmployees() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedEmployees = this.employees.slice(start, end);
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.setPaginatedEmployees();
   }
 
   filterByStatus(status: string) {
