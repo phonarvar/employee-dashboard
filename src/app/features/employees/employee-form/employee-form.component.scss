@@ -1,11 +1,18 @@
 .employee-form {
-  display: grid;
+  display: flex; // switched to flex column
+  flex-direction: column; // stack vertically
   gap: 1rem;
   max-width: 400px;
+  width: 100%;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 
   label {
     font-weight: 600;
-    display: block;
     margin-bottom: 0.25rem;
   }
 
@@ -15,6 +22,12 @@
     border: 1px solid #ccc;
     width: 100%;
     border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box; // includes padding in width, was the fix for different lengths
+  }
+
+  input[type="file"] {
+    padding: 0; // file input doesn't need padding so changed it
   }
 
   img {
@@ -41,7 +54,7 @@
   }
 }
 
-/* 🌙 Dark Mode Overrides */
+/* 🌙 DARK MODE SUPPORT */
 :host-context(body.dark-mode) {
   .employee-form {
     input,
@@ -49,6 +62,10 @@
       background-color: #333;
       color: #eee;
       border-color: #666;
+    }
+
+    input[type="file"] {
+      background-color: transparent;
     }
 
     img {

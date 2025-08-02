@@ -37,21 +37,6 @@ export class EmployeesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
-  /*  //old method, did not use observables, changed employee service to use observables
-  ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
-      const status = params.get('status');
-      const allEmployees = this.employeeService.getEmployees();
-
-      if (status === 'active' || status === 'inactive') {
-        this.employees = allEmployees.filter((emp) => emp.status === status);
-      } else {
-        this.employees = allEmployees;
-      }
-    });
-  }
-  **/
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
       const status = params.get('status');

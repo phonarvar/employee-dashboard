@@ -30,7 +30,9 @@
       </thead>
 
       <!-- searchTerm will be passed as second argument to pipe-->
-      <!-- added app-employee-item attr directive to select tr instead of tbody-->
+      <!-- added app-employee-item attr directive to tr instead of tbody-->
+      <!-- passing employees on employee comp to employee input of employee-item component -->
+      <!-- universal angular rule, left side is input in child comp and right side refers to parent property-->
       <tbody>
         <tr
           *ngFor="let emp of employees"
