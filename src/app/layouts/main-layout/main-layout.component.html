@@ -31,7 +31,13 @@
   </aside>
 
   <main class="content">
-    <a routerLink="/login" class="main-login-button">Login</a>
+    <button *ngIf="!isLoggedIn()" routerLink="/login" class="main-login-button">
+      Login
+    </button>
+
+    <button *ngIf="isLoggedIn()" (click)="logout()" class="main-logout-button">
+      Logout
+    </button>
     <header class="header">
       <p>User Profile | Notifications</p>
     </header>

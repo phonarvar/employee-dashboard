@@ -25,6 +25,26 @@
     }
   }
 
+  input[type="text"] {
+    width: 35%;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .new-btn {
+    margin-bottom: 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
   .employee-table {
     width: 100%;
     border-collapse: collapse;
@@ -32,6 +52,7 @@
     border: 1px solid #dcdde1;
     border-radius: 8px;
     overflow: hidden;
+    margin-bottom: 1rem; // Added space before pagination
 
     thead {
       background-color: #f1f2f6;
@@ -45,64 +66,89 @@
       border-bottom: 1px solid #dcdde1;
     }
   }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    button {
+      padding: 0.4rem 0.75rem;
+      border: none;
+      background-color: #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+
+      &.active {
+        background-color: #3498db;
+        color: white;
+      }
+
+      &:disabled {
+        background-color: #eee;
+        color: #888;
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
-/* REMOVED: img { ... } because of child comp scss*/
-/* REMOVED: td.active { ... } same as above*/
-/* REMOVED: td.inactive { ... } same as above*/
-
-input[type="text"] {
-  width: 35%;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.new-btn {
-  margin-bottom: 1rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 0.65rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* 🌙 DARK MODE */
+/* 🌙 DARK MODE  */
 :host-context(body.dark-mode) {
-  .employee-table {
-    background-color: #1e1e1e;
-    border-color: #444;
-
-    thead {
-      background-color: #2a2a2a;
+  .employees-page {
+    input[type="text"] {
+      background-color: #333;
+      color: #eee;
+      border-color: #666;
     }
 
-    th,
-    td {
-      border-bottom: 1px solid #444;
+    .new-btn {
+      background-color: #2980b9;
     }
-  }
 
-  input[type="text"] {
-    background-color: #333;
-    color: #eee;
-    border-color: #666;
-  }
+    .status-filter button {
+      background-color: #444;
+      color: #eee;
+    }
 
-  .new-btn {
-    background-color: #2980b9;
-  }
+    .status-filter button:hover {
+      background-color: #555;
+    }
 
-  .status-filter button {
-    background-color: #444;
-    color: #eee;
-  }
+    .employee-table {
+      background-color: #1e1e1e;
+      border-color: #444;
 
-  .status-filter button:hover {
-    background-color: #555;
+      thead {
+        background-color: #2a2a2a;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid #444;
+        color: #ddd;
+      }
+    }
+
+    .pagination {
+      button {
+        background-color: #444;
+        color: #eee;
+
+        &.active {
+          background-color: #2980b9;
+          color: #fff;
+        }
+
+        &:disabled {
+          //button: disabled
+          background-color: #333;
+          color: #777;
+        }
+      }
+    }
   }
 }
