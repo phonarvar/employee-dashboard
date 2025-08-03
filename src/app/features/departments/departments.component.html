@@ -53,7 +53,7 @@
           <td>{{ dept.employeeCount }}</td>
           <td *appIfUserIsAdmin>
             <button (click)="deleteDepartment(dept.id)">🗑️</button>
-            <button (click)="viewEmployees(dept.id)">👀 View</button>
+            <button (click)="viewEmployees(dept.name)">👀 View</button>
           </td>
         </tr>
       </tbody>

@@ -35,7 +35,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'departments/:id/employees', // employees for specific department
+        path: 'departments/:name', // was employees for specific department, now route for each department by name
         loadComponent: () =>
           import(
             './features/departments/department-employees/department-employees.component'

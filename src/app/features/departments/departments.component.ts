@@ -80,7 +80,7 @@ export class DepartmentsComponent implements OnInit {
     }
   }
 
-  viewEmployees(deptId: string) {
-    this.router.navigate(['/departments', deptId, 'employees']);
+  viewEmployees(deptName: string) {
+    this.router.navigate(['/departments', deptName]);
   }
 }
