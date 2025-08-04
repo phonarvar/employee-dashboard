@@ -11,10 +11,15 @@
           <th>Name</th>
           <th>Position</th>
           <th>Status</th>
+          <th>Actions</th>
+          <!-- experimental -->
+          <th>Feedback</th>
+          <!-- experimental -->
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let emp of employees">
+          <!-- Photo -->
           <td>
             <img
               [src]="
@@ -25,9 +30,55 @@
               alt="Employee Photo"
             />
           </td>
+
+          <!-- Name -->
           <td>{{ emp.name }}</td>
-          <td>{{ emp.position }}</td>
-          <td>{{ emp.status }}</td>
+
+          <!-- Position: view or dropdown -->
+          <td>
+            <ng-container *ngIf="!editing[emp.id]; else editPosition">
+              {{ emp.position }}
+            </ng-container>
+            <ng-template #editPosition>
+              <select [(ngModel)]="editedPositions[emp.id]">
+                <option *ngFor="let pos of validPositions" [value]="pos">
+                  {{ pos }}
+                </option>
+              </select>
+            </ng-template>
+          </td>
+
+          <!-- Status: view or dropdown -->
+          <td>
+            <ng-container *ngIf="!editing[emp.id]; else editStatus">
+              {{ emp.status }}
+            </ng-container>
+            <ng-template #editStatus>
+              <select [(ngModel)]="editedStatuses[emp.id]">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="on leave">On Leave</option>
+              </select>
+            </ng-template>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <button *ngIf="!editing[emp.id]" (click)="startEdit(emp.id)">
+              ✏️ Edit
+            </button>
+            <ng-container *ngIf="editing[emp.id]">
+              <button (click)="saveChanges(emp.id)">💾 Save</button>
+              <button (click)="cancelEdit(emp.id)">❌ Cancel</button>
+            </ng-container>
+          </td>
+
+          <!-- Feedback -->
+          <td>
+            <span class="feedback">
+              {{ feedback[emp.id] }}
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>

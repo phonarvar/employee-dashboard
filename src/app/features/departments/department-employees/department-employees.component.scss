@@ -1,6 +1,11 @@
 .department-employees {
   padding: 2rem;
 
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -11,26 +16,114 @@
       padding: 0.75rem;
       text-align: left;
       border-bottom: 1px solid #ccc;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      font-weight: 600;
     }
 
     img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
+      object-fit: cover;
     }
+
+    select {
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+      font-size: 0.95rem;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 0.25rem 0.5rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:focus {
+        outline: 2px solid #3498db;
+      }
+    }
+
+    td .feedback {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    td .feedback.success {
+      color: #27ae60;
+    }
+
+    td .feedback.error {
+      color: #e74c3c;
+    }
+  }
+
+  // Table fallback message
+  p {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #777;
   }
 }
 
+// 🌙 Dark Mode Support
 :host-context(body.dark-mode) {
-  table {
-    th,
-    td {
-      color: white;
-      border-color: #333;
+  .department-employees {
+    h2 {
+      color: #fff;
     }
 
-    th {
-      background-color: #1f1f1f;
+    table {
+      th,
+      td {
+        color: #e0e0e0;
+        border-color: #333;
+      }
+
+      th {
+        background-color: #1f1f1f;
+      }
+
+      select {
+        background-color: #2b2b2b;
+        color: #fff;
+        border-color: #555;
+      }
+
+      button {
+        color: #ddd;
+
+        &:hover {
+          color: #fff;
+        }
+
+        &:focus {
+          outline: 2px solid #1e90ff;
+        }
+      }
+
+      td .feedback.success {
+        color: #2ecc71;
+      }
+
+      td .feedback.error {
+        color: #ff6b6b;
+      }
+    }
+
+    p {
+      color: #aaa;
     }
   }
 }
