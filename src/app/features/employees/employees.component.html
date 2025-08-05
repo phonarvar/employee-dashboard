@@ -2,17 +2,25 @@
   <app-spinner *ngIf="loading"></app-spinner>
   <ng-container *ngIf="!loading">
     <h2>Employee List</h2>
+
     <div class="status-filter">
       <button (click)="filterByStatus('active')">Active</button>
       <button (click)="filterByStatus('inactive')">Inactive</button>
       <button (click)="clearStatusFilter()">All</button>
     </div>
+
+    <!-- added (ngModelChange) to update on typing -->
+    <!-- I first created filter pipe, then got rid of it to filter in comp instead-->
+    <!-- It's back again only because I wanted to use the file-->
     <input
       appHoverHighlight
       type="text"
       placeholder="Search by name or department"
       [(ngModel)]="searchTerm"
+      (ngModelChange)="currentPage = 1"
     />
+    <!-- resets to page 1 when searching -->
+
     <button *appIfUserIsAdmin [routerLink]="['/employees/new']" class="new-btn">
       + New Employee
     </button>
@@ -29,13 +37,12 @@
         </tr>
       </thead>
 
-      <!-- searchTerm will be passed as second argument to pipe-->
-      <!-- added app-employee-item attr directive to tr instead of tbody-->
-      <!-- passing employees on employee comp to employee input of employee-item component -->
-      <!-- universal angular rule, left side is input in child comp and right side refers to parent property-->
       <tbody>
+        <!-- used pipe and pagination here -->
+        <!-- the problem was because pagination logic happened in comp, using pipe only affected first page-->
+        <!-- now with resetting currentPage to 1, it's fixed-->
         <tr
-          *ngFor="let emp of paginatedEmployees"
+          *ngFor="let emp of getPaginated(employees | filter : searchTerm)"
           app-employee-item
           [employee]="emp"
         ></tr>
