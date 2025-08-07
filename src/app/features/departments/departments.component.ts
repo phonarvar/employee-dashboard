@@ -12,7 +12,13 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [CommonModule, FormsModule, IfUserIsAdminDirective, RouterModule, SpinnerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IfUserIsAdminDirective,
+    RouterModule,
+    SpinnerComponent,
+  ],
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.scss'],
 })
@@ -82,5 +88,10 @@ export class DepartmentsComponent implements OnInit {
 
   viewEmployees(deptName: string) {
     this.router.navigate(['/departments', deptName]);
+  }
+
+  // Navigate to new page for creating department & transferring employees
+  goToManagePage() {
+    this.router.navigate(['/departments/manage']);
   }
 }

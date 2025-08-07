@@ -1,0 +1,45 @@
+<!-- simple inline spinner to avoid referencing external spinner component -->
+<div *ngIf="loading" class="simple-spinner">Loading…</div>
+
+<div *ngIf="!loading" class="departments-manage">
+  <section class="new-department">
+    <h2>Create / Transfer Department</h2>
+
+    <!-- New Department (optional) -->
+    <input
+      type="text"
+      name="departmentName"
+      [(ngModel)]="newDepartmentName"
+      placeholder="New department name (optional)"
+    />
+
+    <!-- Existing Department (optional) -->
+    <label for="departmentSelect">Select existing department (optional)</label>
+    <select id="departmentSelect" [(ngModel)]="selectedDepartmentId" name="departmentSelect">
+      <option value="">-- select department --</option>
+      <option *ngFor="let dept of departments" [value]="dept.id">
+        {{ dept.name }}
+      </option>
+    </select>
+
+    <label>Select Employees:</label>
+    <div class="employee-checkbox-list">
+      <label *ngFor="let emp of employees; let i = index">
+        <input
+          type="checkbox"
+          [name]="'emp_' + i"
+          [checked]="selectedEmployeeIds.includes(emp.id)"
+          (change)="toggleEmployeeSelection(emp.id, $any($event.target).checked)"
+        />
+        {{ emp.name }}
+      </label>
+    </div>
+
+    <button
+      (click)="createDepartmentAndTransfer()"
+      [disabled]="selectedEmployeeIds.length === 0 || (!newDepartmentName && !selectedDepartmentId)"
+    >
+      Save
+    </button>
+  </section>
+</div>

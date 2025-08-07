@@ -35,6 +35,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'departments/manage',
+        loadComponent: () =>
+          import('./features/departments/departments-manage.component').then(
+            (m) => m.DepartmentsManageComponent
+          ),
+      },
+      {
         path: 'departments/:name', // was employees for specific department, now route for each department by name
         loadComponent: () =>
           import(

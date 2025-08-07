@@ -3,39 +3,6 @@
   <ng-container *ngIf="!loading">
     <h2>Departments</h2>
 
-    <!--  Admin-Only Form -->
-    <form
-      *appIfUserIsAdmin
-      (ngSubmit)="addDepartment()"
-      #deptForm="ngForm"
-      class="department-form"
-    >
-      <input
-        type="text"
-        name="name"
-        [(ngModel)]="newDept.name"
-        placeholder="Department Name"
-        required
-      />
-      <input
-        type="text"
-        name="head"
-        [(ngModel)]="newDept.head"
-        placeholder="Department Head"
-        required
-      />
-      <input
-        type="number"
-        name="employeeCount"
-        [(ngModel)]="newDept.employeeCount"
-        placeholder="Employee Count"
-        required
-      />
-      <button type="submit" [disabled]="deptForm.invalid">
-        Add Department
-      </button>
-    </form>
-
     <!--  Department List -->
     <table class="departments-table">
       <thead>
@@ -58,5 +25,12 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Button moved below table for new department & transfer -->
+    <div class="transfer-btn-wrapper">
+      <button class="transfer-btn" (click)="goToManagePage()">
+        New Department & Transfer
+      </button>
+    </div>
   </ng-container>
 </div>
