@@ -1,111 +1,203 @@
-.departments-manage {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
+:host {
+  display: block;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  color: #222;
 
-  h2 {
+  h2,
+  h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .top-actions {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: #333;
-  }
 
-  section {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-  }
+    button {
+      background-color: #1976d2;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
 
-  input[type="text"],
-  select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    background-color: white;
-    color: #222;
-  }
-
-  button {
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 6px;
-    background-color: #1976d2;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #1565c0;
-    }
-
-    &:disabled {
-      background-color: #ccc;
-      color: #777;
-      cursor: not-allowed;
+      &:hover {
+        background-color: #155a9f;
+      }
     }
   }
 
-  .employee-checkbox-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.5rem;
+  .create-department {
+    background: #f5f5f5;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
 
-    label {
+    form {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       gap: 0.5rem;
-      font-size: 0.95rem;
-      color: #333;
 
-      input[type="checkbox"] {
-        transform: scale(1.2);
+      input {
+        flex: 1;
+        padding: 0.4rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 0.4rem 0.8rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &[type="submit"] {
+          background-color: #388e3c;
+          color: #fff;
+
+          &:hover {
+            background-color: #2d6f2f;
+          }
+        }
+
+        &[type="button"] {
+          background-color: #ccc;
+
+          &:hover {
+            background-color: #b5b5b5;
+          }
+        }
+      }
+    }
+  }
+
+  .transfer-section {
+    background: #fafafa;
+    padding: 1rem;
+    border-radius: 6px;
+
+    .form-row {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+      }
+
+      select,
+      input {
+        padding: 0.4rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.95rem;
+      }
+
+      select[multiple] {
+        min-height: 8rem;
+      }
+
+      .hint {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 0.25rem;
+      }
+    }
+
+    .actions {
+      button {
+        background-color: #1976d2;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #155a9f;
+        }
+
+        &:disabled {
+          background-color: #999;
+          cursor: not-allowed;
+        }
       }
     }
   }
 }
 
-// DARK MODE
+/* 🌙 Dark Mode Support */
 :host-context(body.dark-mode) {
-  .departments-manage {
-    h2 {
-      color: #f1f1f1;
+  color: #e0e0e0;
+
+  .top-actions button {
+    background-color: #90caf9;
+    color: #000;
+
+    &:hover {
+      background-color: #64b5f6;
+    }
+  }
+
+  .create-department {
+    background: #2c2c2c;
+
+    input {
+      background-color: #3a3a3a;
+      color: #fff;
+      border-color: #555;
     }
 
-    section {
-      background-color: #1e1e1e;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
-    }
-
-    input[type="text"],
-    select {
-      background-color: #2b2b2b;
-      border-color: #444;
-      color: #eee;
-    }
-
-    button {
-      background-color: #2196f3;
+    button[type="submit"] {
+      background-color: #66bb6a;
+      color: #000;
 
       &:hover {
-        background-color: #1e88e5;
+        background-color: #57a35c;
+      }
+    }
+
+    button[type="button"] {
+      background-color: #555;
+      color: #fff;
+
+      &:hover {
+        background-color: #666;
+      }
+    }
+  }
+
+  .transfer-section {
+    background: #2a2a2a;
+
+    label {
+      color: #ddd;
+    }
+
+    select,
+    input {
+      background-color: #3a3a3a;
+      color: #fff;
+      border-color: #555;
+    }
+
+    .hint {
+      color: #aaa;
+    }
+
+    .actions button {
+      background-color: #90caf9;
+      color: #000;
+
+      &:hover {
+        background-color: #64b5f6;
       }
 
       &:disabled {
-        background-color: #444;
-        color: #888;
-      }
-    }
-
-    .employee-checkbox-list {
-      label {
-        color: #ddd;
+        background-color: #666;
+        color: #999;
       }
     }
   }

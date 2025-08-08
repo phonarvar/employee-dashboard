@@ -1,45 +1,113 @@
-<!-- simple inline spinner to avoid referencing external spinner component -->
-<div *ngIf="loading" class="simple-spinner">Loading…</div>
+<!-- Spinner while loading global data -->
+<app-spinner *ngIf="loading"></app-spinner>
 
 <div *ngIf="!loading" class="departments-manage">
-  <section class="new-department">
-    <h2>Create / Transfer Department</h2>
+  <h2>Department Management</h2>
 
-    <!-- New Department (optional) -->
-    <input
-      type="text"
-      name="departmentName"
-      [(ngModel)]="newDepartmentName"
-      placeholder="New department name (optional)"
-    />
-
-    <!-- Existing Department (optional) -->
-    <label for="departmentSelect">Select existing department (optional)</label>
-    <select id="departmentSelect" [(ngModel)]="selectedDepartmentId" name="departmentSelect">
-      <option value="">-- select department --</option>
-      <option *ngFor="let dept of departments" [value]="dept.id">
-        {{ dept.name }}
-      </option>
-    </select>
-
-    <label>Select Employees:</label>
-    <div class="employee-checkbox-list">
-      <label *ngFor="let emp of employees; let i = index">
-        <input
-          type="checkbox"
-          [name]="'emp_' + i"
-          [checked]="selectedEmployeeIds.includes(emp.id)"
-          (change)="toggleEmployeeSelection(emp.id, $any($event.target).checked)"
-        />
-        {{ emp.name }}
-      </label>
-    </div>
-
-    <button
-      (click)="createDepartmentAndTransfer()"
-      [disabled]="selectedEmployeeIds.length === 0 || (!newDepartmentName && !selectedDepartmentId)"
-    >
-      Save
+  <!-- Top action: create new department button -->
+  <div class="top-actions">
+    <button type="button" (click)="toggleCreateDept()">
+      {{ showCreateDept ? 'Close' : 'Create New Department' }}
     </button>
+  </div>
+
+  <!-- Inline Create Department form  -->
+  <div *ngIf="showCreateDept" class="create-department">
+    <form (ngSubmit)="createDepartmentInline()" #createForm="ngForm">
+      <label for="newDept">Department name</label>
+      <input
+        id="newDept"
+        name="newDept"
+        type="text"
+        [(ngModel)]="newDeptName"
+        placeholder="Enter department name"
+        required
+      />
+      <button type="submit" [disabled]="!newDeptName.trim() || createLoading">
+        {{ createLoading ? 'Creating...' : 'Create' }}
+      </button>
+      <button type="button" (click)="toggleCreateDept()">Cancel</button>
+    </form>
+  </div>
+
+  <hr />
+
+  <!-- Transfer form -->
+  <section class="transfer-section">
+    <h3>Transfer Employees</h3>
+    <form (ngSubmit)="saveTransfer()" #transferForm="ngForm">
+      <!-- 1) Source department -->
+      <div class="form-row">
+        <label for="sourceDept">Source Department</label>
+        <select
+          id="sourceDept"
+          name="sourceDept"
+          [(ngModel)]="sourceDeptId"
+          (change)="onSourceDeptChange()"
+          required
+        >
+          <option value="" disabled selected>Select source department</option>
+          <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+        </select>
+      </div>
+
+      <!-- 2) Members of source (multi-select) -->
+      <div class="form-row">
+        <label for="membersSelect">Members in source department</label>
+
+        <!-- size attribute provides visible rows; adjust as needed -->
+        <select
+          id="membersSelect"
+          name="membersSelect"
+          [(ngModel)]="selectedMemberIds"
+          multiple
+          size="6"
+          [disabled]="!membersForSource || membersForSource.length === 0"
+        >
+          <option *ngFor="let m of membersForSource" [value]="m.id">
+            {{ m.name }} — {{ m.position || '—' }}
+          </option>
+        </select>
+
+        <div *ngIf="membersForSource.length === 0" class="hint">
+          No members found for this source department.
+        </div>
+      </div>
+
+      <!-- 3) Target department -->
+      <div class="form-row">
+        <label for="targetDept">Target Department</label>
+        <select
+          id="targetDept"
+          name="targetDept"
+          [(ngModel)]="targetDeptId"
+          required
+        >
+          <option value="" disabled selected>Select target department</option>
+          <option
+            *ngFor="let d of departments"
+            [value]="d.id"
+            [disabled]="d.id === sourceDeptId"
+          >
+            {{ d.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- 4) Save -->
+      <div class="form-row actions">
+        <button
+          type="submit"
+          [disabled]="
+            transferLoading ||
+            !sourceDeptId ||
+            !targetDeptId ||
+            selectedMemberIds.length === 0
+          "
+        >
+          {{ transferLoading ? 'Saving...' : 'Save Transfer' }}
+        </button>
+      </div>
+    </form>
   </section>
 </div>
