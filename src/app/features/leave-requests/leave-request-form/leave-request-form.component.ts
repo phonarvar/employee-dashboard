@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/auth-service.service';
 import { LeaveRequestService } from '../../../core/leave-request.service';
-import { LeaveRequest } from '../../../core/model'; // <-- Make sure to import this
+import { LeaveRequest } from '../../../core/model';
 
 @Component({
   selector: 'app-leave-request-form',
@@ -23,10 +23,15 @@ export class LeaveRequestFormComponent {
   @Output() requestSubmitted = new EventEmitter<void>();
 
   submitForm() {
-    const employeeId = this.authService.loggedInUserId();
+    const employeeId = this.authService.loggedInUserId?.() ?? '';
 
     if (!employeeId) {
       alert('User is not logged in!');
+      return;
+    }
+
+    if (!this.startDate || !this.endDate || !this.reason) {
+      alert('Please fill all fields');
       return;
     }
 
@@ -34,17 +39,23 @@ export class LeaveRequestFormComponent {
       startDate: this.startDate,
       endDate: this.endDate,
       reason: this.reason,
-      employeeId: employeeId,
+      employeeId,
       status: 'pending',
       createdAt: new Date().toISOString(),
     };
 
-    this.leaveService.createLeaveRequest(newLeave).subscribe(() => {
-      alert('Leave request submitted!');
-      this.startDate = '';
-      this.endDate = '';
-      this.reason = '';
-      this.requestSubmitted.emit();
+    this.leaveService.createLeaveRequest(newLeave).subscribe({
+      next: () => {
+        alert('Leave request submitted!');
+        this.startDate = '';
+        this.endDate = '';
+        this.reason = '';
+        this.requestSubmitted.emit();
+      },
+      error: (err) => {
+        console.error('Failed to submit leave request:', err);
+        alert('Failed to submit leave request');
+      }
     });
   }
 }

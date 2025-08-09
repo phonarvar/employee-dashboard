@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LeaveRequest } from './model';
 
+
 @Injectable({ providedIn: 'root' })
 export class LeaveRequestService {
   private http = inject(HttpClient);
@@ -24,5 +25,9 @@ export class LeaveRequestService {
 
   createLeaveRequest(data: Omit<LeaveRequest, 'id'>): Observable<LeaveRequest> {
     return this.http.post<LeaveRequest>(this.apiUrl, data);
+  }
+
+  deleteLeave(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

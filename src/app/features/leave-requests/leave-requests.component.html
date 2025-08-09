@@ -1,83 +1,56 @@
 <div class="leave-requests">
-  <!-- USER FORM SECTION -->
-  <div *ngIf="!isAdmin()" class="form-wrapper">
-    <h2>Submit Leave Request</h2>
-    <form (ngSubmit)="submitForm()">
-      <div class="form-group">
-        <label for="startDate">Start Date</label>
-        <input
-          type="date"
-          id="startDate"
-          [(ngModel)]="startDate"
-          name="startDate"
-          required
-        />
-      </div>
+  <h2>Leave Requests</h2>
 
-      <div class="form-group">
-        <label for="endDate">End Date</label>
-        <input
-          type="date"
-          id="endDate"
-          [(ngModel)]="endDate"
-          name="endDate"
-          required
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="reason">Reason</label>
-        <textarea
-          id="reason"
-          [(ngModel)]="reason"
-          name="reason"
-          required
-        ></textarea>
-      </div>
-
-      <button type="submit" class="primary-button">Submit</button>
-    </form>
+  <!-- restore button only for admins -->
+  <div class="admin-actions" *ngIf="authService.isAdmin()">
+    <button (click)="restoreDefaults()" [disabled]="restoreLoading">
+      {{ restoreLoading ? 'Restoring...' : '🔄 Restore Employees & Leave Requests' }}
+    </button>
   </div>
+  
 
-  <!-- ADMIN TABLE SECTION -->
-  <div *ngIf="isAdmin()" class="admin-table">
-    <h2>Leave Requests</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Employee Name</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Reason</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let leave of leaveRequests">
-          <td>{{ getEmployee(leave.employeeId)?.name || "Unknown" }}</td>
-          <td>{{ leave.startDate }}</td>
-          <td>{{ leave.endDate }}</td>
-          <td>{{ leave.reason }}</td>
-          <td>{{ leave.status }}</td>
-          <td>
-            <button
-              *ngIf="leave.status === 'pending'"
-              (click)="approve(leave)"
-              class="approve-button"
-            >
-              Approve
-            </button>
-            <button
-              *ngIf="leave.status === 'pending'"
-              (click)="reject(leave)"
-              class="reject-button"
-            >
-              Reject
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <div *ngIf="loading">Loading...</div>
+
+  <table *ngIf="!loading && leaveRequests.length > 0">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Dates</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of leaveRequests; trackBy: trackByRequestId">
+        <td>{{ getEmployeeName(request.employeeId) }}</td>
+        <td>{{ request.startDate }} → {{ request.endDate }}</td>
+        <td>{{ request.reason }}</td>
+        <td>{{ request.status }}</td>
+        <td>
+          <button
+            class="approve-btn"
+            (click)="approveLeave(request)"
+            [disabled]="isActionLoading(request.id)"
+            title="Approve"
+            aria-label="Approve leave request"
+          >
+            {{ isActionLoading(request.id) ? 'Approving...' : 'Approve' }}
+          </button>
+
+          <button
+            class="reject-btn"
+            (click)="rejectLeave(request)"
+            [disabled]="isActionLoading(request.id)"
+            title="Reject"
+            aria-label="Reject leave request"
+          >
+            {{ isActionLoading(request.id) ? 'Working...' : 'Reject' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading && leaveRequests.length === 0">No leave requests.</p>
 </div>
