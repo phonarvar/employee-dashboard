@@ -4,24 +4,16 @@
     <nav>
       <ul>
         <li>
-          <a routerLink="/dashboard" routerLinkActive="active-link"
-            >Dashboard</a
-          >
+          <a routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
         </li>
         <li>
-          <a routerLink="/employees" routerLinkActive="active-link"
-            >Employees</a
-          >
+          <a routerLink="/employees" routerLinkActive="active-link">Employees</a>
         </li>
         <li>
-          <a routerLink="/departments" routerLinkActive="active-link"
-            >Departments</a
-          >
+          <a routerLink="/departments" routerLinkActive="active-link">Departments</a>
         </li>
         <li>
-          <a routerLink="/leave-requests" routerLinkActive="active-link"
-            >Leave Requests</a
-          >
+          <a routerLink="/leave-requests" routerLinkActive="active-link">Leave Requests</a>
         </li>
         <li>
           <a routerLink="/settings" routerLinkActive="active-link">Settings</a>
@@ -38,9 +30,36 @@
     <button *ngIf="isLoggedIn()" (click)="logout()" class="main-logout-button">
       Logout
     </button>
+
     <header class="header">
-      <p>User Profile | Notifications</p>
+      <div class="user-section">
+        <span class="profile">User Profile</span>
+
+        <!-- Notification Bell -->
+        <div
+          class="notification-icon"
+          (click)="togglePanel()"
+          (mouseenter)="isPanelOpen.set(true)"
+          (mouseleave)="closePanel()"
+        >
+          Notification 🔔
+          <!-- Notification Panel -->
+          <div class="notification-panel" *ngIf="isPanelOpen()">
+            <h4>Notifications</h4>
+            <ul>
+              <li *ngFor="let note of notificationsService.notifications()">
+                {{ note.message }}
+                <small>{{ note.timestamp | date: 'shortTime' }}</small>
+              </li>
+            </ul>
+            <p *ngIf="notificationsService.notifications().length === 0">
+              No notifications yet
+            </p>
+          </div>
+        </div>
+      </div>
     </header>
+
     <section class="page-content">
       <router-outlet></router-outlet>
     </section>

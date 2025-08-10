@@ -2,12 +2,16 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Employee } from './employee.model';
+import { tap } from 'rxjs';
+import { NotificationService } from '../../core/notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeService {
   private http = inject(HttpClient);
+  private notifications = inject(NotificationService);
+
   private apiUrl =
     'https://68802d98f1dcae717b613b25.mockapi.io/api/v1/employees';
 
@@ -20,11 +24,27 @@ export class EmployeeService {
   }
 
   addEmployee(emp: Partial<Employee>): Observable<Employee> {
-    return this.http.post<Employee>(this.apiUrl, emp);
+    return this.http
+      .post<Employee>(this.apiUrl, emp)
+      .pipe(
+        tap((newEmp) =>
+          this.notifications.addNotification(
+            `New employee created: ${newEmp.name}`
+          )
+        )
+      );
   }
 
   updateEmployee(id: string, emp: Partial<Employee>): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiUrl}/${id}`, emp);
+    return this.http
+      .put<Employee>(`${this.apiUrl}/${id}`, emp)
+      .pipe(
+        tap(() =>
+          this.notifications.addNotification(
+            `Employee updated: ${emp.name ?? id}`
+          )
+        )
+      );
   }
 
   deleteEmployee(id: string): Observable<void> {
@@ -32,7 +52,15 @@ export class EmployeeService {
   }
 
   updateStatus(id: string, status: string): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiUrl}/${id}`, { status });
+    return this.http
+      .put<Employee>(`${this.apiUrl}/${id}`, { status })
+      .pipe(
+        tap(() =>
+          this.notifications.addNotification(
+            `Employee #${id} status changed to ${status}`
+          )
+        )
+      );
   }
 }
 

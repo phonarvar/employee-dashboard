@@ -17,7 +17,8 @@ export class AuthService {
   readonly isLoggedIn = computed(() => this._isLoggedIn());
   readonly isAdmin = computed(() => this._isLoggedIn() && this._isAdmin()); //value derived from more than one signal
 
-  login(email: string, password: string): Observable<{ success: boolean }> {
+  //login(email: string, password: string): Observable<{ success: boolean }> {
+    login(email: string, password: string): Observable<any> {
     const user = this.fakeUsers.find(
       (u) => u.email === email && u.password === password
     );
@@ -28,6 +29,7 @@ export class AuthService {
       this._userId.set(user.role === 'admin' ? 'admin-uid' : 'user-uid');
       return of({ success: true }); //returning obs instead of boolean true because http calls return obs as well
     }
+
 
     alert('Invalid credentials');
     return of({ success: false });

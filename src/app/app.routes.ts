@@ -15,6 +15,11 @@ export const routes: Routes = [
     component: MainLayoutComponent, //eager loaded
     children: [
       {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: 'dashboard', //lazy loaded
         loadComponent: () =>
           import('./features/dashboard/dashboard.component').then(
