@@ -10,6 +10,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HoverHighlightDirective } from '../../shared/directives/hover-highlight.directive';
 import { IfUserIsAdminDirective } from '../../shared/directives/if-user-is-admin.directive';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
+import { AuthService } from '../../core/auth-service.service';
 
 @Component({
   selector: 'app-employees',
@@ -31,6 +32,7 @@ export class EmployeesComponent implements OnInit {
   employees: Employee[] = [];
   searchTerm: string = '';
   loading = true;
+  isAdmin = false;
 
   // Pagination variables
   currentPage = 1;
@@ -40,10 +42,13 @@ export class EmployeesComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+
     this.route.queryParamMap.subscribe((params) => {
       const status = params.get('status');
 

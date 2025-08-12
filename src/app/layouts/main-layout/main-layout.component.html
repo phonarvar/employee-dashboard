@@ -4,58 +4,94 @@
     <nav>
       <ul>
         <li>
-          <a routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
+          <a 
+            routerLink="/dashboard" 
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }">
+            Dashboard
+          </a>
         </li>
         <li>
-          <a routerLink="/employees" routerLinkActive="active-link">Employees</a>
+          <a 
+            routerLink="/employees" 
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }">
+            Employees
+          </a>
         </li>
         <li>
-          <a routerLink="/departments" routerLinkActive="active-link">Departments</a>
+          <a 
+            routerLink="/departments" 
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }">
+            Departments
+          </a>
         </li>
         <li>
-          <a routerLink="/leave-requests" routerLinkActive="active-link">Leave Requests</a>
+          <a 
+            routerLink="/leave-requests" 
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }">
+            Leave Requests
+          </a>
         </li>
         <li>
-          <a routerLink="/settings" routerLinkActive="active-link">Settings</a>
+          <a 
+            routerLink="/settings" 
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }">
+            Settings
+          </a>
         </li>
       </ul>
     </nav>
   </aside>
 
   <main class="content">
-    <button *ngIf="!isLoggedIn()" routerLink="/login" class="main-login-button">
-      Login
-    </button>
-
-    <button *ngIf="isLoggedIn()" (click)="logout()" class="main-logout-button">
-      Logout
-    </button>
-
     <header class="header">
       <div class="user-section">
-        <span class="profile">User Profile</span>
+        <!-- Left side -->
+        <div class="left-group">
+          <span class="profile">User Profile</span>
 
-        <!-- Notification Bell -->
-        <div
-          class="notification-icon"
-          (click)="togglePanel()"
-          (mouseenter)="isPanelOpen.set(true)"
-          (mouseleave)="closePanel()"
-        >
-          Notification 🔔
-          <!-- Notification Panel -->
-          <div class="notification-panel" *ngIf="isPanelOpen()">
-            <h4>Notifications</h4>
-            <ul>
-              <li *ngFor="let note of notificationsService.notifications()">
-                {{ note.message }}
-                <small>{{ note.timestamp | date: 'shortTime' }}</small>
-              </li>
-            </ul>
-            <p *ngIf="notificationsService.notifications().length === 0">
-              No notifications yet
-            </p>
+          <!-- Notification Bell -->
+          <!-- #notificationIcon is needed to detect outside clicks -->
+          <div
+            #notificationIcon
+            class="notification-icon"
+            (click)="onClickTogglePin($event)"
+            (mouseenter)="onMouseEnter()"
+            (mouseleave)="onMouseLeave()"
+            aria-haspopup="true"
+            [attr.aria-expanded]="panelOpen()"
+          >
+            Notification 🔔
+
+            <!-- Show panel when isPanelOpen is true -->
+            <div class="notification-panel" *ngIf="panelOpen()">
+              <h4>Notifications</h4>
+              <ul>
+                <li *ngFor="let note of notificationsService.notifications()">
+                  {{ note.message }}
+                  <small>{{ note.timestamp | date: 'shortTime' }}</small>
+                </li>
+              </ul>
+              <p *ngIf="notificationsService.notifications().length === 0">
+                No notifications yet
+              </p>
+            </div>
           </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="right-group">
+          <button *ngIf="!isLoggedIn()" routerLink="/login" class="main-login-button">
+            Login
+          </button>
+
+          <button *ngIf="isLoggedIn()" (click)="logout()" class="main-logout-button">
+            Logout
+          </button>
         </div>
       </div>
     </header>

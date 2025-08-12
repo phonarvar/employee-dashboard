@@ -56,8 +56,14 @@
       cursor: pointer;
       transition: background-color 0.3s;
 
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: #0056b3;
+      }
+    
+      &:disabled {
+        background-color: #666;
+        color: #ccc;
+        cursor: not-allowed;
       }
     }
   }
@@ -65,39 +71,60 @@
 
 // Dark mode
 :host-context(body.dark-mode) {
-  .department-form {
-    input,
-    button {
-      background: #2c2c2c;
-      color: white;
-      border: 1px solid #555;
+  .departments-wrapper {
+    background-color: #1a1a1a; /* dark background for page */
+    color: white;
+
+    .departments-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th {
+        background-color: #2c2c2c; /* header background */
+        color: white; /* header text */
+        border-bottom: 1px solid #444;
+      }
+
+      td {
+        background-color: #1f1f1f; /* cell background */
+        color: white; /* cell text */
+        border-bottom: 1px solid #333;
+      }
+
+      td button {
+        color: white;
+        border: none;
+        padding: 0.4rem 0.6rem;
+        border-radius: 4px;
+        cursor: pointer;
+
+        /* Delete button */
+        &:first-child {
+          background-color: #ff4d4f;
+        }
+        &:first-child:hover {
+          background-color: #cc0000;
+        }
+
+        /* View button */
+        &:nth-child(2) {
+          background-color: #3399ff;
+        }
+        &:nth-child(2):hover {
+          background-color: #1a75ff;
+        }
+      }
     }
 
-    button {
-      background-color: #444;
-    }
-  }
+    /* Transfer button */
+    .transfer-btn-wrapper {
+      .transfer-btn {
+        background-color: #3399ff;
+        color: white;
 
-  .departments-table {
-    th {
-      background: #1f1f1f;
-      color: white;
-    }
-
-    td {
-      color: white;
-      border-color: #333;
-    }
-  }
-
-  // Dark mode style for transfer button
-  .transfer-btn-wrapper {
-    .transfer-btn {
-      background-color: #444;
-      color: white;
-
-      &:hover {
-        background-color: #666;
+        &:hover {
+          background-color: #1a75ff;
+        }
       }
     }
   }

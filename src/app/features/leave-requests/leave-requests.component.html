@@ -1,56 +1,64 @@
 <div class="leave-requests">
-  <h2>Leave Requests</h2>
-
-  <!-- restore button only for admins -->
-  <div class="admin-actions" *ngIf="authService.isAdmin()">
-    <button (click)="restoreDefaults()" [disabled]="restoreLoading">
-      {{ restoreLoading ? 'Restoring...' : '🔄 Restore Employees & Leave Requests' }}
-    </button>
+  <div *ngIf="loading" class="spinner-container">
+    <app-spinner></app-spinner>
   </div>
-  
 
-  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="!loading">
+    <h2>Leave Requests</h2>
+    <!-- restore button only for admins -->
+    <div class="admin-actions" *ngIf="authService.isAdmin()">
+      <button (click)="restoreDefaults()" [disabled]="restoreLoading">
+        {{
+          restoreLoading
+            ? "Restoring..."
+            : "🔄 Restore Employees & Leave Requests"
+        }}
+      </button>
+    </div>
 
-  <table *ngIf="!loading && leaveRequests.length > 0">
-    <thead>
-      <tr>
-        <th>Employee</th>
-        <th>Dates</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let request of leaveRequests; trackBy: trackByRequestId">
-        <td>{{ getEmployeeName(request.employeeId) }}</td>
-        <td>{{ request.startDate }} → {{ request.endDate }}</td>
-        <td>{{ request.reason }}</td>
-        <td>{{ request.status }}</td>
-        <td>
-          <button
-            class="approve-btn"
-            (click)="approveLeave(request)"
-            [disabled]="isActionLoading(request.id)"
-            title="Approve"
-            aria-label="Approve leave request"
-          >
-            {{ isActionLoading(request.id) ? 'Approving...' : 'Approve' }}
-          </button>
+    <div *ngIf="loading">Loading...</div>
 
-          <button
-            class="reject-btn"
-            (click)="rejectLeave(request)"
-            [disabled]="isActionLoading(request.id)"
-            title="Reject"
-            aria-label="Reject leave request"
-          >
-            {{ isActionLoading(request.id) ? 'Working...' : 'Reject' }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <table *ngIf="!loading && leaveRequests.length > 0">
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Dates</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of leaveRequests; trackBy: trackByRequestId">
+          <td>{{ getEmployeeName(request.employeeId) }}</td>
+          <td>{{ request.startDate }} → {{ request.endDate }}</td>
+          <td>{{ request.reason }}</td>
+          <td>{{ request.status }}</td>
+          <td>
+            <button
+              class="approve-btn"
+              (click)="approveLeave(request)"
+              [disabled]="isActionLoading(request.id)"
+              title="Approve"
+              aria-label="Approve leave request"
+            >
+              {{ isActionLoading(request.id) ? "Approving..." : "Approve" }}
+            </button>
 
-  <p *ngIf="!loading && leaveRequests.length === 0">No leave requests.</p>
+            <button
+              class="reject-btn"
+              (click)="rejectLeave(request)"
+              [disabled]="isActionLoading(request.id)"
+              title="Reject"
+              aria-label="Reject leave request"
+            >
+              {{ isActionLoading(request.id) ? "Working..." : "Reject" }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p *ngIf="!loading && leaveRequests.length === 0">No leave requests.</p>
+  </div>
 </div>

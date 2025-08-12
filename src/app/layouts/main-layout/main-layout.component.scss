@@ -61,6 +61,28 @@
         align-items: center;
         gap: 1rem;
         position: relative;
+        width: 100%;
+        justify-content: space-between;
+
+        .left-group {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .right-group {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .main-login-button,
+          .main-logout-button {
+            margin-left: 0;
+            margin-top: 0.2rem;
+            display: inline-block;
+            width: auto;
+          }
+        }
 
         .profile {
           font-weight: bold;
@@ -70,6 +92,7 @@
           position: relative;
           cursor: pointer;
           font-size: 1.2rem;
+          user-select: none;
 
           .notification-panel {
             position: absolute;
@@ -122,7 +145,7 @@
 
     .main-login-button,
     .main-logout-button {
-      background-color: #2e8b57; // green
+      background-color: #2e8b57;
       color: white;
       padding: 0.5rem 1.2rem;
       border-radius: 6px;
@@ -135,17 +158,11 @@
       transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: #3cb371; // lighter green
+        background-color: #3cb371;
       }
     }
   }
 }
-
-/* I had to mess around for hours, got confused so this is Chatgpt's solution,
- it changed a lot of css codes, the first code it gave me, dark-mode selectors weren't wrapped,
-it looked really messy */ /* basically I had to set most backgrounds to black and then
-change the text colors to white, i was not aware of host-context so
-I think this is probably the most optimal way*/
 
 /* Dark mode */
 :host-context(body.dark-mode) {
@@ -203,11 +220,25 @@ I think this is probably the most optimal way*/
         }
       }
     }
+
+    .right-group {
+      .main-login-button,
+      .main-logout-button {
+        background-color: #246b47;
+        color: #eee;
+
+        &:hover {
+          background-color: #3cb371;
+        }
+
+        margin-left: 0;
+      }
+    }
   }
 
   .layout .content .main-login-button,
   .layout .content .main-logout-button {
-    background-color: #246b47; // dark green for dark mode
+    background-color: #246b47;
     color: #eee;
 
     &:hover {

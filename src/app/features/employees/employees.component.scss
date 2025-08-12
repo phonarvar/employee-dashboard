@@ -43,6 +43,16 @@
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+
+    &:hover:not(:disabled) {
+      background-color: #1a75ff;
+    }
+
+    &:disabled {
+      background-color: #666;
+      color: #ccc;
+      cursor: not-allowed;
+    }
   }
 
   .employee-table {
@@ -106,7 +116,16 @@
     }
 
     .new-btn {
-      background-color: #2980b9;
+      background-color: #3498db;
+      &:hover:not(:disabled) {
+        background-color: #1a75ff;
+      }
+
+      &:disabled {
+        background-color: #333;
+        color: #777;
+        cursor: not-allowed;
+      }
     }
 
     .status-filter button {

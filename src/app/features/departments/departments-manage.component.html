@@ -7,7 +7,7 @@
   <!-- Top action: create new department button -->
   <div class="top-actions">
     <button type="button" (click)="toggleCreateDept()">
-      {{ showCreateDept ? 'Close' : 'Create New Department' }}
+      {{ showCreateDept ? "Close" : "Create New Department" }}
     </button>
   </div>
 
@@ -24,7 +24,7 @@
         required
       />
       <button type="submit" [disabled]="!newDeptName.trim() || createLoading">
-        {{ createLoading ? 'Creating...' : 'Create' }}
+        {{ createLoading ? "Creating..." : "Create" }}
       </button>
       <button type="button" (click)="toggleCreateDept()">Cancel</button>
     </form>
@@ -47,15 +47,17 @@
           required
         >
           <option value="" disabled selected>Select source department</option>
-          <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+          <option *ngFor="let d of departments" [value]="d.id">
+            {{ d.name }}
+          </option>
         </select>
       </div>
 
-      <!-- 2) Members of source (multi-select) -->
+      <!-- 2) Members of source -->
       <div class="form-row">
         <label for="membersSelect">Members in source department</label>
 
-        <!-- size attribute provides visible rows; adjust as needed -->
+        <!-- size attribute provides visible rows, adjustable -->
         <select
           id="membersSelect"
           name="membersSelect"
@@ -65,7 +67,7 @@
           [disabled]="!membersForSource || membersForSource.length === 0"
         >
           <option *ngFor="let m of membersForSource" [value]="m.id">
-            {{ m.name }} — {{ m.position || '—' }}
+            {{ m.name }} — {{ m.position || "—" }}
           </option>
         </select>
 
@@ -105,7 +107,7 @@
             selectedMemberIds.length === 0
           "
         >
-          {{ transferLoading ? 'Saving...' : 'Save Transfer' }}
+          {{ transferLoading ? "Saving..." : "Save Transfer" }}
         </button>
       </div>
     </form>

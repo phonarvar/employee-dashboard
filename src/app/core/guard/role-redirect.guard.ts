@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../auth-service.service';
 
-export const roleRedirectGuard: CanActivateFn = () => {
+export const roleRedirectGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -10,7 +10,7 @@ export const roleRedirectGuard: CanActivateFn = () => {
   const isAdmin = authService.isAdmin();
 
   if (!userId) {
-    router.navigate(['/login']);
+    router.navigate(['/login'], { queryParams: { redirectTo: state.url } });
     return false;
   }
 
@@ -21,3 +21,4 @@ export const roleRedirectGuard: CanActivateFn = () => {
 
   return true; // Admin stays on /leave-requests
 };
+

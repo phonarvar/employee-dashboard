@@ -18,6 +18,8 @@ import { Employee } from '../employee.model';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../employees.service';
 import { HoverHighlightDirective } from '../../../shared/directives/hover-highlight.directive';
+import { DepartmentService } from '../../../core/department.service';
+import { Department } from '../../../core/model';
 
 @Component({
   selector: 'app-employee-form',
@@ -35,11 +37,13 @@ export class EmployeeFormComponent implements OnInit {
 
   form!: FormGroup;
   imagePreview: string | null = null;
+  departments: Department[] = [];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private employeeService: EmployeeService,
+    private departmentService: DepartmentService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -57,6 +61,12 @@ export class EmployeeFormComponent implements OnInit {
     });
 
     this.imagePreview = this.form.value.imageUrl;
+
+    // Fetch departments from API
+    this.departmentService.getDepartments().subscribe((depts) => {
+      this.departments = depts;
+      this.cdr.markForCheck();
+    });
   }
 
   onSubmit(): void {

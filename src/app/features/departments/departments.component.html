@@ -28,7 +28,7 @@
 
     <!-- Button moved below table for new department & transfer -->
     <div class="transfer-btn-wrapper">
-      <button class="transfer-btn" (click)="goToManagePage()">
+      <button class="transfer-btn" (click)="goToManagePage()"  [disabled]="!isAdmin">
         New Department & Transfer
       </button>
     </div>

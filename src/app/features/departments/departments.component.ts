@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { IfUserIsAdminDirective } from '../../shared/directives/if-user-is-admin.directive';
 import { Router, RouterModule } from '@angular/router';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
+import { AuthService } from '../../core/auth-service.service';
 
 @Component({
   selector: 'app-departments',
@@ -26,10 +27,12 @@ export class DepartmentsComponent implements OnInit {
   private departmentService = inject(DepartmentService);
   private employeeService = inject(EmployeeService);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   departments: Department[] = [];
   employees: Employee[] = [];
   loading = true;
+  isAdmin = false;
 
   newDept: Partial<Department> = {
     name: '',
@@ -39,6 +42,7 @@ export class DepartmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData(); // CHANGED from loadDepartments()
+    this.isAdmin = this.authService.isAdmin(); // Check if the user is an admin
   }
 
   loadData() {
@@ -92,6 +96,7 @@ export class DepartmentsComponent implements OnInit {
 
   // Navigate to new page for creating department & transferring employees
   goToManagePage() {
+    if (!this.isAdmin) return; //just to be safe
     this.router.navigate(['/departments/manage']);
   }
 }

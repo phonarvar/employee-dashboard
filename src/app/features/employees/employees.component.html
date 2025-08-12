@@ -21,7 +21,15 @@
     />
     <!-- resets to page 1 when searching -->
 
-    <button *appIfUserIsAdmin [routerLink]="['/employees/new']" class="new-btn">
+    <!--   Removed to be consistent 
+       <button *appIfUserIsAdmin [routerLink]="['/employees/new']" class="new-btn">
+      + New Employee
+    </button> -->
+    <button
+      class="new-btn"
+      [routerLink]="isAdmin ? ['/employees/new'] : null"
+      [disabled]="!isAdmin"
+    >
       + New Employee
     </button>
 

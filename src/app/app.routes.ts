@@ -45,6 +45,7 @@ export const routes: Routes = [
           import('./features/departments/departments-manage.component').then(
             (m) => m.DepartmentsManageComponent
           ),
+        canActivate: [canActivateAdmin],
       },
       {
         path: 'departments/:name', // was employees for specific department, now route for each department by name

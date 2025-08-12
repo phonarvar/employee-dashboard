@@ -1,6 +1,6 @@
 :host {
   display: block;
-  padding: 2rem 2rem 2rem 260px;
+  padding: 2rem;
   box-sizing: border-box;
 
   .form-wrapper {
@@ -69,7 +69,7 @@
   }
 }
 
-/* 🌙 Dark Mode Styles Only */
+/* 🌙 Dark Mode */
 :host-context(body.dark-mode) {
   .form-wrapper {
     background-color: #1e1e1e;
