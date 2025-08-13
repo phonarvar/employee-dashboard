@@ -10,8 +10,8 @@
       <button (click)="restoreDefaults()" [disabled]="restoreLoading">
         {{
           restoreLoading
-            ? "Restoring..."
-            : "🔄 Restore Employees & Leave Requests"
+            ? "Restoring...(takes a few minutes, backend rate limited, using timeout)"
+            : "🔄 Restore Employees & Leave Requests(takes a few minutes, backend rate limited)"
         }}
       </button>
     </div>
