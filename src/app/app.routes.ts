@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { EMPLOYEES_ROUTES } from './features/employees/employees.routes';
 import { LoginComponent } from './features/login/login.component';
 import { EmployeeFormComponent } from './features/employees/employee-form/employee-form.component'; //remove later
 import { RealUsersComponent } from './features/real-users/real-users.component';
@@ -11,11 +10,11 @@ import { roleRedirectGuard } from './core/guard/role-redirect.guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: '', //outer path, means when url is the root of application, the MainLayoutComponent is loaded
     component: MainLayoutComponent, //eager loaded
-    children: [
+    children: [ //have router-outlet inside mainlayoutcomp.html so these children render there
       {
-        path: '',
+        path: '', //inner path, It means that within the MainLayoutComponent's <router-outlet> when no child path is provided redirect to dashboard
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
@@ -29,8 +28,9 @@ export const routes: Routes = [
       },
       {
         path: 'employees', //use loadChildren when grouping otherwise use loadComponent
-        loadChildren: () => Promise.resolve(EMPLOYEES_ROUTES), //Angular expects the loadChildren function to return
-        //a Promise that resolves to an object with a routes property
+        loadChildren: () => import('./features/employees/employees.routes').then( //changed the promise to directly import route file instead
+          (m) => m.EMPLOYEES_ROUTES ),
+        
       },
       {
         path: 'departments',
